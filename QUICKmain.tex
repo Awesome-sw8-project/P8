@@ -1,0 +1,116 @@
+\input{"AAUImport"/setup/preamble.tex}
+\input{"AAUImport"/setup/hyphenations.tex}
+\input{"AAUImport"/setup/macros.tex}
+
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage[norule]{footmisc} %used to remove rule from footnotes
+\usepackage{longtable} %used for the semantic rule tables
+\usepackage{floatflt,amsmath,amssymb} %used to make the semantic fractions
+\usepackage[ligature, inference]{semantic}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig, tikz}
+\usepackage{floatflt}
+%\usepackage{subfig}
+\usepackage{afterpage}
+\usepackage{listings}
+\usepackage[colorinlistoftodos,textwidth=\marginparwidth]{todonotes}
+\usepackage{xpatch,letltxmacro}
+\usepackage{longtable}
+\usepackage{pgfplots}
+\usepackage{pdfpages}
+\usepackage{lipsum}
+\usepackage{pdfpages}
+\usepackage{glossaries}
+
+
+\makeglossaries
+\loadglsentries{glossaries.tex}
+
+\pgfplotsset{width=10cm,compat=1.9}
+
+
+\usemintedstyle{}
+\newcommand\mynumberformat{\def\FancyVerbFormatLine##1{{\theFancyVerbLine} ##1}}
+\LetLtxMacro{\cmintedlinenos}{\minted}
+\let\endcmintedlinenos\endminted
+\xpretocmd{\cmintedlinenos}{\setminted{linenos=true}\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{formatcom=\mynumberformat}{}}{}{}
+
+\LetLtxMacro{\cminted}{\minted}
+\let\endcminted\endminted
+\xpretocmd{\cminted}{\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{}}{}{}
+\newcommand{\changelocaltocdepth}[1]{%
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{#1}}%
+  \setcounter{tocdepth}{#1}%
+}
+
+\lstset{
+ % basicstyle=\itshape,
+  xleftmargin=3em,
+  literate={->}{$\rightarrow$}{2}
+           {α}{$\alpha$}{1}
+           {δ}{$\delta$}{1}
+           {lambda}{{$\lambda$}}{1}
+}
+\newcommand\Tstrut{\rule{0pt}{4ex}}         % = `top' strut
+\newcommand\Bstrut{\rule[-4ex]{0pt}{0pt}}   % = `bottom' strut
+\newcommand{\ldb}{\mathopen{\lbrack\!\lbrack}} 
+\newcommand{\rdb}{\mathclose{\rbrack\!\rbrack}}
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \newpage}
+
+\usepackage{etoolbox}
+
+\makeatletter
+\pretocmd{\chapter}{\addtocontents{toc}{\protect\addvspace{-3\p@}}}{}{}
+\pretocmd{\section}{\addtocontents{toc}{\protect\addvspace{-5\p@}}}{}{}
+\makeatother
+
+    
+    
+\begin{document}
+\pagestyle{empty} %disable headers and footers
+\pagenumbering{roman} %use roman page numbering in the frontmatter
+
+%\includepdf[pages=-]{ForsideGiraf.pdf}
+
+%\input{"AAUImport/sections/frontpage.tex"}%
+%\newpage
+%\input{"AAUImport/sections/titlepages.tex"}%
+%\newpage
+%\input{"AAUImport/sections/preface.tex"}%
+%\input{"AAU Import/sections/introduction.tex"}
+%\newpage
+
+\cleardoublepage
+\pdfbookmark[0]{Contents}{label:contents}
+\pagestyle{fancy} %enable headers and footers again
+\pagenumbering{arabic} 
+
+%\chapter*{Preface}
+%\input{Report/Preface.tex}
+%\newpage
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+\afterpage{\blankpage}
+
+%\newpage
+%\listoftodos
+%\newpage
+
+%\addcontentsline{toc}{chapter}{References}
+
+\printbibliography
+\printglossaries
+
+%\part{Appendices}
+\appendixpageoff
+\begin{appendices}
+
+\end{appendices}
+\end{document}

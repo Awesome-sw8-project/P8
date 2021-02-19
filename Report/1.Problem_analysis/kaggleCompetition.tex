@@ -1,0 +1,17 @@
+\section{Kaggle Competition}
+\label{sec:kaggleComp}
+Kaggle is an online community for data scientists and machine learning enthusiasts. Kaggle offers courses, code sharing, datasets, competitions, etc. Companies can create competitions where users can compete to solve a problem formulated by different companies. Microsoft Research and XYZ10 have made a competition on Kaggle called \textbf{Indoor Location \& Navigation} and is running from January 21st 2021 to May 17th 2021. The purpose of the competition is to optimize indoor positioning based on datasets provided by the organizers.
+
+The datasets consist of sensor data from Android phones which have been carried around in Chinese malls, as explained in \textbf{\autoref{data}}. The participants in the competition have the possibility to help each other by sharing code, discuss relevant topics and team up. When a team has a solution, they are supposed to estimate locations from a test set supplied by the organizers. The teams can then submit the predictions as a CSV file.
+
+A template for this CSV file is already provided by the organizers and contains the scenarios to predict upon. The file contains 4 columns, namely the combined ID, floor level and X- \& Y-coordinates of the precise location. The first column containing the combined IDs, each combined ID can be divided into three IDs describing a site, a path and a time. For each combined ID a prediction for floor level and location has to be estimated, which can then be written to the CSV file and submitted. The submissions are then evaluated by Kaggle based on the \textit{mean position error} which is defined as:
+
+\begin{equation} \label{eq:MeanPositionError}
+\text{mean position error} = \frac{1}{N} \sum_{i=1}^{N}  
+                                                \left( \sqrt{( \hat{x}_i - x_i )^{2} + ( \hat{y}_i - y_i )^{2}} 
+                                                + p \cdot | \hat{f}_{i} - f_i | \right) 
+\end{equation}
+
+In this evaluation, \textbf{N} denotes the number of rows in the prediction. All the denotations with a hat are the predicted variables and the corresponding denotations without the hat are the actual locations. $x$ and $y$ denote the location in the building and $f$ is the floor in the building. $p$ represents the floor penalty constant of empirically 15 meters per floor\cite{MicrosoftConversation}. When a submission has been evaluated, the score gets a ranking on the leaderboard where the smallest scores are highest ranking. The leaderboard is divided into two different leaderboards where one is public and the other is private. The public leaderboard shows the evaluation score of approximately 15\% of the test data. The private leaderboard is hidden until the competition has ended and this leaderboard shows the evaluation score of the other 85\% of the test data.\cite{CompetitionSite}
+
+To interact with the competition, the participants either use the website or the Kaggle \gls{api}. The \gls{api} tool is installed using Python and \gls{pip}. To download all the data for this competition using the \gls{api}, the command \textbf{kaggle competitions download -c indoor-location-navigation} is utilized. The predictions are possible to submit utilizing the command \textbf{kaggle competitions submit indoor-location-navigation -f FILE\_NAME -m MESSAGE}, where \textbf{FILE\_NAME} is the file to be submitted and \textbf{MESSAGE} is a description of the submission.\cite{KaggleAPI} If the users do not want to use the \gls{api}, these actions are available on the website as well.

@@ -1,0 +1,27 @@
+\section{Data Analysis}\label{data}
+The predictions for the competition should be based on previous data, and the quality and distribution of the data affect the prediction. Therefore, it is important to inspect, analyse and clean the data to ensure the best possible grounds for a prediction.
+
+\subsection{Data Introduction}
+%Structure of data
+For the aforementioned competition, a dataset is provided for the purpose of predicting accurate indoor positions. The dataset is divided into three folders, namely \textit{metadata}, \textit{train} and \textit{test}. The \textit{metadata} and \textit{train} folders are partitioned by site and then by floor. The \textit{metadata} folder contains information about the floors of each site in the \textit{train} folder, which includes the spatial properties of the floor that can be used to plot. The \textit{train} and \textit{test} folder contain similar structured files. Each file contains information about a particular trace and observed sensor data. All the data is collected from Android smartphones.\cite{KaggleData}
+
+The first column is a timestamp indicating when the data was gathered. The second column specifies the type of sensor which the data is gathered from. This type also specifies the belonging attributes of that data gathering. The different types of data gathered is as follows\cite{KaggleDataGithub}:
+
+\begin{itemize}
+    \item TYPE\_ACCELEROMETER
+    \item TYPE\_MAGNETIC\_FIELD
+    \item TYPE\_GYROSCOPE
+    \item TYPE\_ROTATION\_VECTOR
+    \item TYPE\_MAGNETIC\_FIELD\_UNCALIBRATED
+    \item TYPE\_GYROSCOPE\_UNCALIBRATED
+    \item TYPE\_ACCELEROMETER\_UNCALIBRATED
+    \item TYPE\_WIFI
+    \item TYPE\_BEACON
+    \item TYPE\_WAYPOINT
+\end{itemize}
+
+The rest of the columns are deemed by the type of data gathered, but essentially describes the value of the given sensor's callback function at the given timestamp. The columns are concerned with spatial data saved from the given sensor. The different sensors are elaborated in \textbf{\autoref{sec:actuator_sensor}}. The last type denoted above is the TYPE\_WAYPOINT, which is the ground truth location labeled by the surveyor.\cite{KaggleDataGithub} In the training data, some occasional new lines are missing, which cause the system to skip to the next line. This issue should be resolved to utilise all the training data.\cite{KaggleData}
+
+The last folder \textit{test} is the data in need of accurate positioning predictions. The folder has a similar structured data to the \textit{train} folder, though it does not organize the data into floors, since this should be predicted. Each file contains a trace to predict a precise location (TYPE\_WAYPOINT) and floor level upon. The predictions should be submitted in a CSV file.\cite{KaggleData}
+
+When working with the data, we observed that the floor levels are labelled different from the value to be submitted. Namely, "\textit{F1}", "\textit{L1}" and "\textit{1F}" instead of the label that should be written in the submission file, which would be "\textit{0}". To utilise all the data, we need to transform the data to use the same name.

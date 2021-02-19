@@ -1,0 +1,161 @@
+\input{"AAUImport"/setup/preamble.tex}
+\input{"AAUImport"/setup/hyphenations.tex}
+\input{"AAUImport"/setup/macros.tex}
+
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage[norule]{footmisc} %used to remove rule from footnotes
+\usepackage{longtable} %used for the semantic rule tables
+\usepackage{floatflt,amsmath,amssymb} %used to make the semantic fractions
+\usepackage[ligature, inference]{semantic}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig, tikz}
+\usepackage{floatflt}
+%\usepackage{subfig}
+\usepackage{afterpage}
+\usepackage{listings}
+
+\usepackage{morewrites}
+
+\usepackage{xpatch,letltxmacro}
+\usepackage{longtable}
+\usepackage{pgfplots}
+\usepackage{pdfpages}
+\usepackage{lipsum}
+\usepackage{pdfpages}
+\usepackage{glossaries}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage[color, leftbars]{changebar}
+\usepackage{multicol}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\definecolor{OliveGreen}{rgb}{0,0.6,0}
+\definecolor{myorange}{rgb}{1.0, 0.63, 0.48}
+\definecolor{mygreen}{rgb}{0.74, 0.85, 0.34}
+\definecolor{myblue}{rgb}{0, 240, 240}
+
+\setlength\changebarsep{5pt}
+
+\makeglossaries
+\loadglsentries{glossaries.tex}
+
+\pgfplotsset{width=10cm,compat=1.9}
+
+\usemintedstyle{}
+\newcommand\mynumberformat{\def\FancyVerbFormamtLine##1{{\theFancyVerbLine} ##1}}
+\LetLtxMacro{\cmintedlinenos}{\minted}
+\let\endcmintedlinenos\endminted
+\xpretocmd{\cmintedlinenos}{\setminted{linenos=true}\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{formatcom=\mynumberformat}{}}{}{}
+
+\LetLtxMacro{\cminted}{\minted}
+\let\endcminted\endminted
+\xpretocmd{\cminted}{\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{}}{}{}
+\newcommand{\changelocaltocdepth}[1]{%
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{#1}}%
+  \setcounter{tocdepth}{#1}%
+}
+
+\lstset{
+ % basicstyle=\itshape,
+  xleftmargin=3em,
+  literate={->}{$\rightarrow$}{2}
+           {α}{$\alpha$}{1}
+           {δ}{$\delta$}{1}
+           {lambda}{{$\lambda$}}{1}
+}
+\newcommand\Tstrut{\rule{0pt}{4ex}}         % = `top' strut
+\newcommand\Bstrut{\rule[-4ex]{0pt}{0pt}}   % = `bottom' strut
+\newcommand{\ldb}{\mathopen{\lbrack\!\lbrack}} 
+\newcommand{\rdb}{\mathclose{\rbrack\!\rbrack}}
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \newpage}
+
+\usepackage{etoolbox}
+\usepackage{hyperref}
+\addto\extrasenglish{
+    \def\chapterautorefname{Chapter}
+    \def\sectionautorefname{Section}
+    \def\subsectionautorefname{Section}
+    \def\subsubsectionautorefname{Section}
+    \def\tableautorefname{Table}
+    \def\figureautorefname{Figure}
+}
+\makeatletter
+\pretocmd{\part}{\addtocontents{toc}{\protect\addvspace{-8\p@}}}{}{}
+\pretocmd{\chapter}{\addtocontents{toc}{\protect\addvspace{-5\p@}}}{}{}
+\pretocmd{\section}{\addtocontents{toc}{\protect\addvspace{-6\p@}}}{}{}
+\pretocmd{\subsection}{\addtocontents{toc}{\protect\addvspace{-7\p@}}}{}{}
+\makeatother
+
+\begin{document}
+\pagestyle{empty} %disable headers and footers
+\pagenumbering{roman} %use roman page numbering in the frontmatter
+
+%\includepdf[width=1.38\textwidth, pages=-]{Report/WORST.pdf}
+\input{"AAUImport/sections/frontpage.tex"}%
+\newpage
+\input{"AAUImport/sections/titlepages.tex"}%
+%\newpage
+%\input{"AAUImport/sections/preface.tex"}%
+%\input{"AAU Import/sections/introduction.tex"}
+%\newpage
+
+\cleardoublepage
+\pdfbookmark[0]{Contents}{label:contents}
+\pagestyle{fancy} %enable headers and footers again
+\pagenumbering{roman}
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+%\afterpage{\blankpage}
+
+\chapter*{Preface}
+\input{Report/preface}
+\newpage\pagenumbering{arabic}
+
+\part{Introduction \& Analysis}
+
+\chapter{Introduction}
+\input{Report/0.Introduction/introduction}
+
+\chapter{Problem Analysis}
+\input{Report/1.Problem_analysis/IPS}
+\input{Report/1.Problem_analysis/1.intro}
+\input{Report/1.Problem_analysis/mobile}
+\input{Report/1.Problem_analysis/mobile_constraints}
+\input{Report/1.Problem_analysis/kaggleCompetition}
+\input{Report/1.Problem_analysis/dataset}
+\input{Report/1.Problem_analysis/data_analysis}
+\input{Report/1.Problem_analysis/sensors}
+\input{Report/1.Problem_analysis/existingTechnologies}
+\input{Report/1.Problem_analysis/existingSystems}
+\input{Report/1.Problem_analysis/existingframeworks}
+
+\newpage
+\listoftodos
+\newpage
+\printglossaries
+
+\addcontentsline{toc}{chapter}{References}
+
+\printbibliography
+
+\part{Appendix}
+\appendix
+
+
+
+%\markdownInput{offline.md}
+
+%\part{Appendices}
+%\appendixpageoff
+%\begin{appendices}
+
+%\end{appendices}
+\end{document}
