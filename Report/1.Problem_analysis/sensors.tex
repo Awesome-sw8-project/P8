@@ -1,4 +1,4 @@
-\section{Application of Sensors and Actuators}\label{sec:actuator_sensor} \todo{Vielleicht vi skulle skrive til sidst, hvilket hardware der er tilgængeligt fra Kaggle, så vi kan afgrænse os fra det der ikke er tilgængeligt, hvormindre vi stadig vil bruge noget hardware der ikke er tilgængeligt. Jeg tænker bare, at det kunne være godt med en afgræsning til sidst.}
+\section{Application of Sensors and Actuators}\label{sec:actuator_sensor} 
 %In this section, we briefly describe the sensors and actuators available in the Kaggle competition for measuring indoor positions. Furthermore, we present the advantages and disadvantages of using these sensors and actuator.
 
 In this section, we briefly describe the commonly used sensors and actuators that can be used in indoor positioning systems, along with examples of systems making use of them, their advantages and disadvantages. 
@@ -49,18 +49,23 @@ The advantage of this approach is that it has been reported to have an accuracy 
 
 The disadvantage of this approach using infrared is that infrared signals are unable to penetrate obstacles and usually have a range of around two meters\cite{HabilitationThesis}.
 
-One widely known infrared positioning system is the Active badge System, which is based on infrared beacons. The purpose of the system is to locate the room people are in. The people must wear a badge that emits infrared pulses along an ID, which are then picked up by infrared receivers deployed at a fixed location.
+One widely known infrared positioning system is the Active Badge System, which is based on infrared beacons. The purpose of the system is to locate the room people are in. The people must wear a badge that emits infrared pulses along an ID, which are then picked up by infrared receivers deployed at a fixed location.\cite{HabilitationThesis}
+
+
+\subsection{Ultrasound-Based}
+
+Because of the 
+
+Ultrasound positioning can be done by using ultrasound transmitters that can broadcast sound waves which a standard microphone in a smartphone can gather and use for determining the position\cite{IPSMapsPeople}. In contrast to \gls{ble} and Wi-Fi, the ultrasound signal can be obstructed by walls, doors etc. This can be an advantage if you do not want ambiguity between rooms. Since ultrasound signals are obstructed by walls, the signal can not escape the room, and you will therefore have a more approximate localisation in terms of rooms. \cite{leverage-ultrasound}
+
+One of the leading companies in ultrasound positioning is Sonitor. They have indoor localisation solutions for areas like the hospitality industry and the medical industry, where it can be important to know the exact room a person is located in. \cite{sonitor}
+
 
 \subsection{UWB}
 \gls{uwb} works by transmitting signals using an antenna, much like Bluetooth beacons and Wi-Fi routers. Therefore, like Bluetooth beacons and Wi-Fi routers, the location of a device can be computed making use of triangulation or trilateration, mentioned in \textbf{\autoref{sec:triangulation}} and \textbf{\autoref{sec:trilateration}}. Furthermore, systems making use of \gls{uwb} benefits from the high accuracy that is achievable, since it is possible to achieve an accuracy of around 30 centimeters. A disadvantage of \gls{uwb} is that they are susceptible to interference.\cite{oriient} Another disadvantage is that additional hardware is required to be installed on the device to be positioned in order to receive the signals\cite{LundIMU}.
 
 % Tilføjede et ekstra 's', fordi det er i flertal ((IPSs) indoor positioning systems), så ik' slet det! :-)
 \gls{ips}s in industrial environments often use \gls{uwb} to locate devices. This is because precision is of high priority.\cite{Infsoft}
-
-\subsection{Ultrasound-Based}
-Ultrasound positioning can be done by using ultrasound transmitters that can broadcast sound waves which a standard microphone in a smartphone can gather and use for determining the position\cite{IPSMapsPeople}. In contrast to \gls{ble} and Wi-Fi, the ultrasound signal can be obstructed by walls, doors etc. This can be an advantage if you do not want ambiguity between rooms. Since ultrasound signals are obstructed by walls, the signal can not escape the room, and you will therefore have a more approximate localisation in terms of rooms. \cite{leverage-ultrasound}
-
-One of the leading companies in ultrasound positioning is Sonitor. They have indoor localisation solutions for areas like the hospitality industry and the medical industry, where it can be important to know the exact room a person is located in. \cite{sonitor}
 
 \subsection{Light-Based}
 Through LED lighting, we can position objects inside buildings. The LED light component communicates with smartphones through \gls{ble}, visible light communication, or video analysis.\cite{IPSMapsPeople}
@@ -72,7 +77,7 @@ One of the leading companies working with light-based indoor positioning is Phil
 \subsection{\gls{rfid}}
 An \gls{rfid}-based indoor localization system works by having \gls{rfid} readers listen for radio waves transmitted by nearby \gls{rfid} tags. Using \gls{rfid} readers in fixed locations, an indoor localization system can be built using the readers the same way as for Wi-Fi routers and Bluetooth beacons as either proximity, fingerprinting, or using trilateration or triangulation.\cite{HabilitationThesis}.
 
-There are generally two types of \gls{rfid} systems: passive and active. Active \gls{rfid} readers are equipped with batteries, making them heavier and more costly. On the other hand, active \gls{rfid} have a range of up to 30 meters. Passive \gls{rfid} readers do not require batteries, but rely on inductive coupling, where energy is received from radio waves transmitted by a nearby \gls{rfid} tag. Passive \gls{rfid} readers are small in size, inexpensive to install, and requires minimal maintenance due to the fact they have no batteries. On the other hand, passive \gls{rfid} readers have a limited range of two meters, making them dependent on dense deployment.
+There are generally two types of \gls{rfid} systems: passive and active. Active \gls{rfid} readers are equipped with batteries, making them heavier and more costly. On the other hand, active \gls{rfid} have a range of up to 30 meters. Passive \gls{rfid} readers do not require batteries, but rely on inductive coupling, where energy is received from radio waves transmitted by a nearby \gls{rfid} tag. Passive \gls{rfid} readers are small in size, inexpensive to install, and requires minimal maintenance due to the fact they have no batteries. On the other hand, passive \gls{rfid} readers have a limited range of two meters, making them dependent on dense deployment.\cite{HabilitationThesis}.
 
 RFID tags are used for indoor positioning in the navigational system \textit{ways4all}, where several arrays of RFID tags are positioned under the carpet to help guiding blind people around an indoor environment\cite{HabilitationThesis}.
 
@@ -101,8 +106,13 @@ Some of the above mentioned techniques can be used together to give a more preci
 In \cite{aauhybrid}, a method is proposed where a hybrid between Wi-Fi and Bluetooth is developed. The Wi-Fi is used as the main infrastructure for fingerprint based positioning, and Bluetooth hotspots are used for partitioning the indoor space, where after an Wi-Fi position is estimated. It works by having multiple Bluetooth hotspots around the area, and when a user leaves a Bluetooth hotspot, a Wi-Fi estimate will be obtained by searching the corresponding part of the radio map, where the specific part is given by the Bluetooth hotspot. By using this method they could improve the accuracy from 3.15 meters (pure Wi-Fi), to 1.75 meters (hybrid). 
 
 
-%https://ieeexplore.ieee.org/document/6569137
 
 
-\subsection{What To Use} % Skal nok have en ny titel.
-% Husk at skriv, at Wi-Fi beacons måske ikke kan bruges, da iOS ikke tillader at se RSSI fra Wi-Fi. Det kan være, at det stadig ikke er et problem, da det var i 2015: Oriient rapporten. Derudover er Wi-Fi jo også meget upræcis, i hvertfald i forhold til Bluetooth, som er alternativet i fingerprint-baserede implementationer.
+\subsection{What To Use} 
+
+\todo{Vielleicht vi skulle skrive til sidst, hvilket hardware der er tilgængeligt fra Kaggle, så vi kan afgrænse os fra det der ikke er tilgængeligt, hvormindre vi stadig vil bruge noget hardware der ikke er tilgængeligt. Jeg tænker bare, at det kunne være godt med en afgræsning til sidst.}
+
+% Skal nok have en ny titel.
+% Husk at skriv, at Wi-Fi beacons måske ikke kan bruges, da iOS ikke tillader at se RSSI fra Wi-Fi. Det kan være, at det stadig ikke er et problem, da det var i 2015: Oriient rapporten. Derudover er Wi-Fi jo også meget upræcis, i hvertfald i forhold til Bluetooth, som er alternativet i fingerprint-baserede implementationer
+
+% Referér til section om Kaggle dataset.

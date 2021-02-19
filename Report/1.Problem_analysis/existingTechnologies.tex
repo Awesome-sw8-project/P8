@@ -1,4 +1,4 @@
-\section{Existing Positioning Methods}
+\section{Existing Positioning Methods} \todo{Tilføj section om proximity.}
 In this section, we will consider positioning algorithms, which can be used to estimate the location. The positioning algorithms can be divided into three types, namely geometry-based algorithms, positioning algorithms using scene analysis and proximity, and positioning algorithms using inertial measurements. Each of the algorithm types have their own weaknesses and strengths. Therefore, combining more than one algorithm could potentially lead to a better estimate of the location.
 
 \subsection{Scene Analysis}\todo{RETTELSER HER.}
@@ -25,13 +25,16 @@ The \textit{k}-Nearest Neighbors algorithm works by first finding \textit{k} nea
 %https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8054235
 
 \subsubsection{Hidden Markov Model}
-In the \gls{hmm}, the idea is to consider a series of measurements instead of a single signal measurements, which greatly improved the location estimation accuracy. This series of measurements makes it possible to keep track of a device's location over time. \gls{hmm} consists of two types of nodes, namely the observable nodes and hidden nodes. The observable nodes are denoted by the white circles in \textbf{\autoref{fig:hmm}}, while the hidden states are denoted by the shaded circles. We assume that hidden nodes or states only depends on the observable states. In the \gls{ips} context, the observable states will be the locations while the hidden states will be the signal measurements. \gls{hmm} has a transition probability distribution, and an emission probability distribution. The transition probabilities models the state at time $t$ based on time $t-1$ meaning that the history of 
+In the \gls{hmm}, the idea is to consider a series of measurements instead of a single signal measurements, which greatly improved the location estimation accuracy. This series of measurements makes it possible to keep track of a device's location over time. \gls{hmm} consists of two types of states, namely the observable states and hidden states. The observable states are denoted by the shaded circles in \textbf{\autoref{fig:hmm}}, while the hidden states are denoted by the shaded circles. \gls{hmm} assumes that hidden states only depends on the observable states. In the \gls{ips} context, the observable states will be the signal measurements like Wi-Fi \gls{rssi} while the hidden states will be the locations. \gls{hmm} has a transition probability distribution, and an emission probability distribution. The transition probabilities models the state at time $t$ based on time $t-1$ meaning that the history of device' locations are captured in the transition probability. The emission probabilities models the probability of a particular observation being made at a state.\cite{hmmOverview}
 \begin{figure}[h]
     \centering
     \includegraphics[scale=1.6]{Images/ProblemAnalysis/hmm_pe.PNG}
-    \caption{\gls{hmm} of position tracking}
+    \caption{Graphical representation of \gls{hmm} in the \gls{ips} context. The white nodes are the locations and hidden states of the model. The shaded nodes are the signal measurements, and are the observable states of the \gls{hmm} \cite{hmmOverview}}
     \label{fig:hmm}
 \end{figure}
+
+A \gls{hmm}-based approach is investigated by \cite{hmm01}. The approach uses Wi-Fi \gls{rssi} measurements as the input or observable states. In this approach, the transition probabilities are modelled by displacement ranging, where step counting and stride length are considered. Furthermore, to reduce the computation overhead when using this approach \textit{k}-nearest is used to reduce the amount of location candidates considered. This approach achieves a \textit{mean position error} of less than 1 meter for 50\% of the instances, while for 80\% of the instances the error is 2.5 meters, and for all of the data instances the \textit{mean positioning error} is at 5 meters.
+
 % \begin{longtable}{ p{.25\textwidth}  p{.7\textwidth}}
 % \textbf{Tree Based Learning} & Tree based learning employs decision tree(s) or classification tree(s) for classification. A decision tree is a tree which consists of internal and leaf nodes. The internal nodes has a condition based on the observations or the input and contains two children nodes. One of the children nodes will be labeled true while the other is labeled false. Each leaf node is labeled with a class, and the classification will be the labeled class at the leaf node depending on which leaf node is reached within the tree.\cite{AIBook}
 % \\\\
@@ -45,7 +48,7 @@ In the \gls{hmm}, the idea is to consider a series of measurements instead of a 
 % \label{table:fingerprinting}
 % \end{longtable}
 
-\subsection{Geometry Based Methods}
+\subsection{Geometry Based Methods} \todo{Skriv om PDR.}
 In this section, we will describe two different techniques to compute a position of an object geometrically.
 
 \subsubsection{Triangulation} \label{sec:triangulation}
@@ -130,3 +133,44 @@ The position of the object can be represented as in \textbf{\autoref{eq:IMUPosit
 \begin{equation} \label{eq:IMUPosition}
     \begin{bmatrix}p_{x} \\ p_{y}\end{bmatrix} = \begin{bmatrix}p_{x_{i}} \\ p_{y_{i}}\end{bmatrix} + \begin{bmatrix}s_{x} \\ s_{y}\end{bmatrix} = \begin{bmatrix}p_{x - 1} \\ p_{y - 1}\end{bmatrix} + \begin{bmatrix}\Delta s_{x} \\ \Delta s_{y}\end{bmatrix}
 \end{equation}
+
+\subsubsection{\gls{pdr}}
+The \gls{pdr} method is described in \cite{HybridPositioningPaper}.
+
+\gls{pdr} tracking is based on step detection algorithms, step length estimations $l_t$ and heading measurements $\theta_t$, all used to solve the problem defined in \textbf{\autoref{eq:pdr_x}} and \textbf{\autoref{eq:pdr_y}}.
+
+\begin{equation} \label{eq:pdr_x}
+    x_t = x_{t - 1} + l_t\cos(\theta_t)
+\end{equation}
+
+\begin{equation} \label{eq:pdr_y}
+    y_t = y_{t - 1} + l_t\sin(\theta_t)
+\end{equation}
+
+The basic idea behind step detection is to use accelerometer measurements to observe increase and decrease in acceleration.
+Pre-processing of accelerometer measurements is needed, since the measurements can be too noisy. This pre-processing consists of a gravity factor used in a high-pass filter and a low-pass filter, as defined in \textbf{\autoref{eq:high_pass_filter}} and \textbf{\autoref{eq:low_pass_filter_acc}} using the acceleration measurements data, defined in \textbf{\autoref{eq:acc_measurements}}. A high-pass filter is applied to remove a gravity factor, and low-pass filter acceleration is used to <SOMETHING>, as defined in \textbf{\autoref{eq:low_pass_filter_acc}}.
+
+\begin{equation} \label{eq:acc_measurements}
+    a_{eff, t} = \sqrt{a_{x, t}^2 + a_{y, t}^2 + a_{z, t}^2}
+\end{equation}
+
+\begin{equation} \label{eq:high_pass_filter}
+    g_{z, t} = \alpha g_{z, t - 1} + (1 - \alpha) a_{eff, t}
+\end{equation}
+
+\begin{equation} \label{eq:low_pass_filter_acc}
+    a_{LPF}[i] = \frac{1}{m} \sum_{j = \frac{-(m - 1)}{2}}^{\frac{m - 1}{2}} a_{HPF}[i + j]
+\end{equation}
+
+The gravity factor in \textbf{\autoref{eq:high_pass_filter}} is subtracted from the acceleration measurements data, where $\alpha$ is a constant, typically defined as $0.9$. The low-pass filter defined in \textbf{\autoref{eq:low_pass_filter_acc}} is stored for use in the step detection algorithm, where $m$ is a moving average filter, set to $10$.
+Regarding the step detection algorithm, two methods can be used: the zero-crossing method and the peak detection method, both of which are out of scope for this section.
+
+For step length estimation, there exists two methods: static and dynamic. The static method assumes a person is walking at a constant velocity, whereas the dynamic method makes use of an accelerator for dynamic estimation. Weinberg is one method for dynamic step length estimation, which is defined as in \textbf{\autoref{eq:weinberg}}
+
+\begin{equation} \label{eq:weinberg}
+    l = k \sqrt[4]{a_{LPF, peak} - a_{LPF, valley}}
+\end{equation}
+
+In \textbf{\autoref{eq:weinberg}}, $k$ is a constant factor, for example, $0.5$, $a_{LPF, peak}$ is the maximum acceleration in the z-axis and $a_{LPF, valley}$ is the minimum acceleration.
+
+Heading estimation is accomplished with the use of the IMU.
