@@ -25,6 +25,7 @@
 \usepackage{lipsum}
 \usepackage{pdfpages}
 \usepackage{glossaries}
+%\usepackage{glossaries-extra}
 \usepackage{xcolor}
 \usepackage{tabularx}
 \usepackage[color, leftbars]{changebar}
@@ -125,21 +126,39 @@
 \input{Report/0.Introduction/introduction}
 
 \chapter{Problem Analysis}
-\input{Report/1.Problem_analysis/IPS}
 \input{Report/1.Problem_analysis/1.intro}
-\input{Report/1.Problem_analysis/mobile}
-\input{Report/1.Problem_analysis/mobile_constraints}
-\input{Report/1.Problem_analysis/kaggleCompetition}
-\input{Report/1.Problem_analysis/dataset}
-\input{Report/1.Problem_analysis/data_analysis}
-\input{Report/1.Problem_analysis/sensors}
-\input{Report/1.Problem_analysis/existingTechnologies}
-\input{Report/1.Problem_analysis/existingSystems}
-\input{Report/1.Problem_analysis/existingframeworks}
+\input{Report/1.Problem_analysis/2.IPS}
+\input{Report/1.Problem_analysis/3.sensors}
+\input{Report/1.Problem_analysis/4.kaggleCompetition}
+%\input{Report/1.Problem_analysis/mobile}
+%\input{Report/1.Problem_analysis/mobile_constraints}
+\input{Report/1.Problem_analysis/5.dataset}
+\input{Report/1.Problem_analysis/6.data_analysis}
+\input{Report/1.Problem_analysis/7.existingTechnologies}
+%\input{Report/1.Problem_analysis/existingSystems}
+%\input{Report/1.Problem_analysis/existingframeworks}
+\input{Report/1.Problem_analysis/8.ProblemStatement}
+
+\chapter{Data Standard}
+\input{Report/2.DataStandard/DesignChoice}
+
+\chapter{Experiments}
+\input{Report/3.Experiments/designChoices}
+
+\chapter{Technology}
+\input{Report/4.Technology/Mobility}
+
+\chapter{Design}
+
+\chapter{Implementation}
+
+\chapter{Evaluation}
 
 \newpage
 \listoftodos
 \newpage
+
+\renewcommand{\glsgroupskip}{}
 \printglossaries
 
 \addcontentsline{toc}{chapter}{References}
@@ -148,8 +167,6 @@
 
 \part{Appendix}
 \appendix
-
-
 
 %\markdownInput{offline.md}
 

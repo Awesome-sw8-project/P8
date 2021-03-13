@@ -1,0 +1,120 @@
+\section{Existing Positioning Methods} \label{sec:existingpositioningmethods}
+In this section, we will consider positioning algorithms, which can be used to estimate the location. The positioning algorithms can be divided into three types, namely geometry-based algorithms, positioning algorithms using scene analysis, and positioning algorithms using inertial measurements. Each of the algorithm types have their own weaknesses and strengths. Therefore, combining more than one algorithm could potentially lead to a better estimate of the location. 
+
+\subsection{Scene Analysis}
+\label{sec:scene_analysis}
+Algorithms which perform scene analysis work by first constructing fingerprints for a scene, then estimate the location by matching online measurements against the locations' fingerprints. This type of algorithms is also called location fingerprinting. Location fingerprinting consists of two phases, namely the offline phase and online phase. In the training phase or offline phase, the data, typically radio frequency data, is collected at access points for different known indoor positions, and a fingerprint is constructed for known indoor positions. During the online phase, the real time position is estimated by pattern matching the measured data with the fingerprints of the locations from the offline phase.\cite{IPS01} The following machine learning algorithms can perform location fingerprinting.
+
+\subsubsection{LightGBM}
+As LightGBM is a widely used algorithm by other competition participants at Kaggle, we will also be investigating this algorithm.
+LightGBM is a variation of the \gls{gbdt} algorithm. \gls{gbdt} is an ensemble model of decision trees, which are trained in sequence. In each iteration, the \gls{gbdt} learns the parameters of the decision trees. A decision tree is a tree which consists of internal and leaf nodes. The internal nodes have a condition based on the observations or the input and contain two children nodes. One of the children nodes will be labeled true while the other is labeled false. Each leaf node is labeled with a class, and the classification will be the labeled class at the leaf node depending on which leaf node is reached within the tree\cite{AIBook}.
+The LightGBM significantly outperforms other \gls{gbdt} algorithms like XGBoost and Stochastic Gradient Boosting in terms of computational speed and memory consumption, which is ideal for our case as the model should be made available on a mobile application/service. \cite{lightgbm} LightGBM is not widely used in \gls{ips} when relating to research in \gls{ips}. In the Kaggle competition, \cite{lgbmKaggle01} uses LightGBM and Wi-Fi \gls{rssi} measurements to achieve a public score of 8.34 meter based on the evaluation metric defined in \textbf{\autoref{sec:kaggleComp}}. The aforementioned LightGBM implementation achieves the lowest \textit{mean positioning error} for the LightGBM implementations at Kaggle.
+
+\subsubsection{Artificial Neural Network}
+Neural Networks are inspired by the neurons in the brain. The networks consist of neurons or units organised into layers. The typical neural network architecture is the \gls{ann}. This type of network consists of an input layer, an output layer, and a number of hidden layers\cite{AIBook}. 
+
+The use of \gls{ann} in \gls{ips} has among other been investigated by \cite{ANN01}. The \gls{ann} model proposed by the paper consists of an input layer with four neurons, an output layer with two neurons, and four hidden layers. The indoor positioning system proposed by the paper only considers Wi-Fi \gls{rssi} data. As input to the model, it uses normalised Wi-Fi \gls{rssi} measurements from each of the access points. The environment in the paper consists of four access points and thus results in four input neurons. The output of the model will be the \textit{x} and \textit{y} coordinates. Furthermore, the amount of hidden layers for the model should depend on the number of input and output neurons. The performance of the model is evaluated through precision in the form of the \textit{position error}, and accuracy in the form of \textit{Mean Position Error}. The result of the ANN is that the ANN can achieve a error of less than 1 meter for 30\% of the instances, 10\% of the instances has an error more than 2 meters, and 60 \% of the instances has an error of 1-2 meter. 
+
+\cite{ANN02} also investigates the feasibility of \gls{ann} in \gls{ips}. This method also uses Wi-Fi \gls{rssi} measurements as input data. Here, the results are summarised by the \textit{mean position error} and the training time for the \gls{ann}. The results are measured for two scenarios, one complex environment with increased interference and another environment with less interference. The \textit{mean position error} is around 0.21 meter for all configuration of \gls{ann} in the complex environment and 0.1 meter for the simple environment. 
+
+The main challenge with \gls{ann} is to find the balance between computation time and performance as it is possible to achieve greater performance with deeper networks but this would also result in more computation time and therefore might not be ideal to implement in a mobile device. However, model compression techniques can be used to compress a deep network model.
+
+\subsubsection{kNN}
+The \textit{k}-Nearest Neighbors algorithm works by first finding \textit{k} nearest neighbors through a distance metric. After finding the \textit{k} nearest neighbor, the classification or prediction will be the majority of the neighbors. In a position estimation setting, instead of considering the majority of the neighbors, an average of the \textit{k} nearest neighbors is calculated. This average would then be the location estimate. The most commonly used distance metric in positioning is the Euclidean distance. \cite{IPS01} In the IPS context, a Weighted \textit{k}-Nearest Neighbors algorithm (WKNN) has been investigated by \cite{wknn}. In the WKNN, the \textit{k} nearest neighbors are first weighted according to some weights before averaging them. In this paper, the Manhattan distance achieves better results compared to the Euclidean distance. WKNN achieved an error of 1.07 meter for 80\% of the errors, and approximately 2 meter for all of the errors. This algorithm can also be used in real-time application.
+%https://link.springer.com/article/10.1007/s11277-017-4295-z
+%https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8054235
+
+\subsubsection{Hidden Markov Model}
+In the \gls{hmm}, the idea is to consider a series of measurements instead of a single signal measurements, which greatly improved the location estimation accuracy. This series of measurements makes it possible to keep track of a device's location over time. \gls{hmm} consists of two types of states, namely the observable states and hidden states. The observable states are denoted by the shaded circles in \textbf{\autoref{fig:hmm}}, while the hidden states are denoted by the shaded circles. \gls{hmm} assumes that hidden states only depends on the observable states. In the \gls{ips} context, the observable states will be the signal measurements like Wi-Fi \gls{rssi} while the hidden states will be the locations. \gls{hmm} has a transition probability distribution, and an emission probability distribution. The transition probabilities models the state at time $t$ based on time $t-1$ meaning that the history of device' locations are captured in the transition probability. The emission probabilities models the probability of a particular observation being made at a state.\cite{hmmOverview}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=1.6]{Images/ProblemAnalysis/hmm_pe.PNG}
+    \caption{Graphical representation of \gls{hmm} in the \gls{ips} context. The white nodes are the locations and hidden states of the model. The shaded nodes are the signal measurements, and are the observable states of the \gls{hmm} \cite{hmmOverview}}
+    \label{fig:hmm}
+\end{figure}
+
+A \gls{hmm}-based approach is investigated by \cite{hmm01}. The approach uses Wi-Fi \gls{rssi} measurements as the input or observable states. In this approach, the transition probabilities are modelled by displacement ranging, where step counting and stride length are considered. Furthermore, to reduce the computation overhead when using this approach \textit{k}-nearest is used to reduce the amount of location candidates considered. This approach achieves a \textit{mean position error} of less than 1 meter for 50\% of the instances, while for 80\% of the instances the error is 2.5 meters, and for all of the data instances the \textit{mean positioning error} is at 5 meters.
+
+% \begin{longtable}{ p{.25\textwidth}  p{.7\textwidth}}
+% \textbf{Tree Based Learning} & Tree based learning employs decision tree(s) or classification tree(s) for classification. A decision tree is a tree which consists of internal and leaf nodes. The internal nodes has a condition based on the observations or the input and contains two children nodes. One of the children nodes will be labeled true while the other is labeled false. Each leaf node is labeled with a class, and the classification will be the labeled class at the leaf node depending on which leaf node is reached within the tree.\cite{AIBook}
+% \\\\
+% \textbf{Neural Network} & Neural Networks are inspired by the neurons in the brain. The networks consist of neurons or units organised into layers. There are many different types of neural networks, where the typical network architecture is feed-forward neural networks. This type of network consist of an input layer, an output layer, and a number of hidden layers.\cite{AIBook} 
+% \\\\
+% \textbf{kNN} & The \textit{k}-Nearest Neighbors algorithm works by first finding \textit{k} nearest neighbors through a distance metric. After finding the \textit{k} nearest neighbor, the classification or prediction will be the majority of the neighbors. In position estimation setting, instead of considering the majority of the neighbors, an average of the \textit{k} nearest neighbors is calculated. This average would then be the location estimate. The most commonly used distance metric in positioning is the Euclidean distance. \cite{IPS01}
+% \\\\
+% \textbf{Probabilistic Model} & The probabilistic model are based on Bayes' rule, and models the problem in terms of probabilities. One probabilistic method is to, given a measured signal and a number of location candidates, model the probability of each of the location candidates conditionally dependent on the measured signal. The location candidate with the highest probability would then be the location estimate.\cite{IPS02}. Other probabilistic models could also be useful in position estimation such as the Hidden Markov Model, where we in addition to the measured signal also consider the previously measured signals when estimating a position.
+% \\%\\
+% %\caption{presents the main recommender system types.}
+% \label{table:fingerprinting}
+% \end{longtable}
+
+\subsection{Geometry-Based Methods}
+In this section, we will describe three different techniques to estimate a position of an object geometrically.
+
+\subsubsection{Triangulation} \label{sec:triangulation}
+Triangulation is described in \cite{Triangulation}. Triangulation is based on using angles of known points in space. Among the triangulation based methods, four popular types exist. The four types use different types of data, which are \gls{toa}, \gls{tdoa}, \gls{aoa}, or signal strength (\gls{rssi}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.9939]{Images/ProblemAnalysis/triangulation.PNG}
+    \caption{Overview of the four popular triangulation methods.\cite{triangulation01}}
+    \label{fig:triangulation}
+\end{figure}
+
+We will now elaborate on the popular methods described in \textbf{\autoref{fig:triangulation}}. In the method using \gls{toa}, the time to transmit a signal from a base station to a mobile device is recorded and used to calculate the distance inbetween. This, however, requires precise time synchronisation between all devices which could be cumbersome. In the methods using the \gls{tdoa}, the mobile device transmits positioning signals to nearby measuring units, and the \gls{tdoa} is estimated and used for the positioning. In the methods utilising \gls{aoa}, the basic idea is to use goniometry to estimate the position. The base stations contain antennas to measure the angle of the incoming signals from the mobile device. This information is then used to estimate the position of the device.\cite{triangulation01}
+
+Triangulation does not seem to be accurate in the indoor positioning setting as several paper find other methods more accurate compared to it \cite{triangulation02}\cite{triangulation03trilat}. However, it might be possible to combine it with other methods, like location fingerprinting, which could result in better performance\cite{triangulation4}. AS it does not perform well on its own, we will not be working with this method.
+
+\subsubsection{Trilateration} \label{sec:trilateration} 
+Trilateration is described in \cite{Triangulation}. In trilateration, the basic idea is to compute the point of intersection between the three circles defined by the beacons. The point of intersection is the position of the mobile device and can be calculated by using the mathematical definitions of the circles created by the signals transmitted from the beacons. This is illustrated in \textbf{\autoref{fig:trilateration}}, where $a$, $b$ and $c$ are the beacons, $m$ is the position of the device to be located, and $l$ values, with respect to each beacon, are the radii of each circle.
+%In trilateration, the position of an object is calculated by solving three equations defining the circles. This is illustrated in \textbf{\autoref{fig:trilateration}}.
+%By letting the beacons be denoted as $a$, $b$ and $c$, and the object to locate $m$, we can solve the the three equations to compute the location of $m$, where $l$ is the radius of each circle.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.8]{Images/ProblemAnalysis/trilateration.jpg}
+    \caption{Illustration of locating an object using three beacons with the use of trilateration\cite{Triangulation}.}
+    \label{fig:trilateration}
+\end{figure}
+
+In the indoor positioning context, trilateration does not seem as the ideal solution\cite{trilateration02}. One of the key findings in \cite{trilateration02} is that trilateration is infeasible in \gls{ips}. Some papers also use trilateration in comparison to other methods to illustrate that the other methods achieve better performance \cite{triangulation03trilat, trilateration01}. Due to the aforementioned reasons, we will not be implementing trilateration for our indoor localisation method.
+
+
+\subsubsection{Centroid}
+The centroid localisation algorithms are described in \cite{5759777}. Centroid is, like triangulation and trilateration, based on beacons and the locations of the beacons. The goal is to provide a location estimate of an object given a vector of \gls{rss} values. There exists two algorithms to locate an object: a range-based, which uses several distance to beacon estimations obtained from \gls{rss} measurements, and a range-free, which determines a location without distance estimations. These two algorithms are identified as \gls{wcl}\cite{5759777} and \gls{rewl}\cite{5759777}, respectively.
+
+\gls{wcl} approximates the location of an object by calculating the centroid of the coordinates of the beacons that are in range. Using this algorithm, the distance from the object to each of the beacons within range is taken into account.
+In the estimation of the position of an object using \gls{rewl}, \gls{rewl} favors the beacons transmitting with higher \gls{rss} values, since those are likely to be closer to the object.
+
+\cite{7536951} implemented an indoor localization system using the centroid approach using WCL. The system achieved an accuracy of around 2 meters.
+
+This method requires additional information, namely the location of the beacons. Therefore, to implement a localisation system using the centroid method requires a way to provide these beacon locations for the position estimation. As this is not widely available in the mobile context, we will not be using this method.
+
+\subsection{IMU positioning} \label{sec:IMUPositioning}
+Location estimation with the use of IMU is described in \cite{IMUPositioning}. As mentioned in \textbf{\autoref{sec:actuator_sensor}}, IMU consists of an accelerometer, a gyroscope and a magnetometer, and makes use of these to compute a position. Using IMU positioning, one can compute a position by the displacement of an initial position. This is also the disadvantage of IMU positioning, namely that an initial position is required.
+
+To compute a position using IMU positioning, one starts by using the Euler method to compute the velocity of the moving object given data from the accelerometer, and then uses the the Euler method to compute the displacement from an initial position. Combining the results of these two computations along the current accelerator reading, the total displacement can be computed.
+
+As just mentioned, the only requirements to implement indoor positioning using IMU are an initial position and that the sensors that make up an IMU are integrated within the mobile device. Therefore, we will experiment with indoor positioning using the Euler method and \gls{pdr}, which is mentioned in the following section.
+
+\subsubsection{\acrlong{pdr}}\label{sec:pdr}
+The \gls{pdr} method is described in \cite{HybridPositioningPaper}. \gls{pdr} tracking is based on step detection algorithms, step length estimations $l_t$ and heading measurements $\theta_t$, all used to solve the problem defined in \textbf{\autoref{eq:pdr_x}} and \textbf{\autoref{eq:pdr_y}}.
+
+\begin{equation} \label{eq:pdr_x}
+    x_t = x_{t - 1} + l_t\cos(\theta_t)
+\end{equation}
+
+\begin{equation} \label{eq:pdr_y}
+    y_t = y_{t - 1} + l_t\sin(\theta_t)
+\end{equation}
+
+The basic idea behind step detection is to use accelerometer measurements to observe increase and decrease in acceleration.
+Pre-processing of accelerometer measurements is needed, since the measurements can be noisy.
+
+% Step detection er med til at fjerne noget af fejl-akkumuleringen.
+Regarding the step detection algorithm, two methods can be used: the zero-crossing method and the peak detection method, both of which are out of scope for this section.
+For step length estimation, there exists two methods: static and dynamic. The static method assumes a person is walking at a constant velocity, whereas the dynamic method makes use of an accelerator for dynamic estimation. Weinberg is one common method for dynamic step length estimation. Heading estimation is accomplished with the use of the IMU.
+
+In \cite{IMUPaper}, an IMU-based indoor positioning system is implemented using \gls{pdr}. Magnetic coils are setup at fixed locations for the magnetometer to use to estimate the heading. The system was tested with two magnetic coils at had its worst accuracy at around 7.5 meters, due to sensor drifting.
+Another indoor positioning system using chest-mounted IMU and \gls{pdr} was implemented in \cite{s19020420}. This system does not make use of magnetic coils to estimate the heading, but rather map matching. This system achieved an accuracy of less than 5 meters, but sensor drifting was again the reason for the inaccuracy.

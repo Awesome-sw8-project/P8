@@ -1,0 +1,29 @@
+\section{Problem Statement} \label{sec:problemstatement}
+In this section, we will summarise the key points of the problem analysis. We furthermore formulate a problem statement, which we will work with during this project. We have investigated \gls{gps} and reached the conclusion that \gls{gps} is not sufficient for indoor positioning in a complex environment like the shopping malls. To this end, we have investigated the Indoor Location \& Navigation Competition from Kaggle, which provides a dataset with sensor data collected by a mobile phone at different locations in shopping malls. We furthermore investigate different sensors and conclude that we will be experimenting with data from Wi-Fi, Bluetooth Beacons, \gls{imu}, and geomagnetic sensors. We have also performed a data analysis, where one of the conclusions reached is that the dataset is highly imbalanced with regards to floor levels. As the last part of the problem analysis, we have explored existing positioning methods. Amongst the existing positioning methods, we have mainly looked into scene analysis methods and geometry-based methods. Amongst the scene analysis methods, we have found LightGBM, \gls{ann}, \gls{hmm} and \textit{k}NN. Amongst the geometry-based methods, we have only found \gls{imu}-based methods to be reasonable. 
+
+This leads to the following problem statement.
+\begin{center}
+    \textbf{\textit{A service or system which can estimate the indoor locations in shopping malls given data collected on a mobile device.}}
+\end{center}
+
+\subsection{Requirements}
+After analysing the problem and understanding the different aspects of indoor positioning systems, we can now specify the requirements for this project. To prioritise the requirements, we have decided to use the MoSCoW method, which is a well-known technique for prioritising requirements. In this analysis, we can divide the requirements into Must haves, Should haves, Could haves and Will not have this time around.\cite[140]{davidbenyon2013}
+
+\begin{table}[H]
+\caption{The requirements with index number and MoSCoW classification.}
+\begin{tabularx}{\textwidth}{| c | c | X |}
+\hline
+\textbf{Index} & \textbf{MoSCoW} & \textbf{Requirements}\\\hline
+R.1 & M & The system must estimate the indoor location (floor level, x- and y-coordinates). \\\hline
+R.2 & M & The system must make use of data collected on a smartphone.\\\hline
+R.3 & M & The data must be processed and cleaned.\\\hline
+R.4 & S & The system should perform at least equivalently in terms of \gls{mpe} to the Bronze ranked submissions in the Kaggle public leaderboard.\\\hline
+R.5 & S & The system should be implemented as a location-based service for smartphones.\\\hline
+R.6 & C & The system could make use of location fingerprinting.\\\hline
+R.7 & C & The method could incorporate geometry based method(s).\\\hline
+%R.7 & C & The system could be implemented as an Android service.\\\hline
+R.8 & C & The system could have a graphical user interface.\\\hline
+R.9 & W & The system is wanted to be deployable on smartphones.\\\hline
+\end{tabularx}
+\label{table:requirements}
+\end{table}

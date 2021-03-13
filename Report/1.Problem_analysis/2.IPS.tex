@@ -1,0 +1,19 @@
+\section{Indoor Positioning}
+When we are outdoor, we rely on satellite-based positioning systems, such as \gls{gps}. \gls{gps} is a U.S utilization that is used by both civilians and the military. In order to get an accurate positioning, navigation and timing services, different components are used: \cite{GPSofficial}
+
+\begin{itemize}
+    \item Space component is operated by satellites that transmit signals to users on geographical locations and timestamp. 
+    \item Control component consists of different elements: 
+    \begin{itemize}
+        \item Monitor Stations tracks the \gls{gps} satellites as they pass and feed observations to the Master Control Station. 
+        \item Master Control Station computes precise locations of the satellites.
+        \item Ground Antennas communicate with satellites. 
+    \end{itemize}
+    \item User component consists of \gls{gps} receivers or transmitters, including telematic devices, smartphones and etc. 
+\end{itemize}
+
+However, the issue with \gls{gps} is that it looses its accuracy when used indoor, as if the device is not in line of sight, meaning the device does not have a clear sight to the sky, which is needed for the satellite to place a more accurate position\cite{GPSofficial}. This is due to the reason that signals cannot penetrate through materials, such as glass, brick, metal and etc.\cite{GPSofficial}. \gls{gps} signals are also classified as a part of \gls{uhf} which results in another problem as in an indoor environment there are potential sources of \gls{uhf} signals which can interfere with the \gls{gps} signal, for example, TV antennas signals can interfere with \gls{gps} signals\cite{GPSofficial}.
+This is the reason why we need other technologies when we want to estimate the indoor location. \gls{ips} is a term which covers different technologies that use mobile devices to exploit their physical location. After an \gls{ips} is developed, it is possible to make use of \gls{lbs}.
+
+%https://blog.mapspeople.com/mapsindoors/indoor-positioning-101%
+%https://blog.mapspeople.com/mapsindoors/indoor-positioning-101
