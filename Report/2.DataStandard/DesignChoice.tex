@@ -10,52 +10,98 @@ As mentioned in \textbf{\autoref{sec:data}}, we have decided to work with the da
     \label{fig:DataArchitecture}
 \end{figure}
 
-To determine how to prepare the data for scene analysis, we created an overall architecture of the data processing, which can be viewed on \textbf{\autoref{fig:DataArchitecture}}. The three different components, namely \textit{Data Preprocessing}, \textit{Data Pipeline} and \textit{Test Preprocessing} will be described in the following sections. The \textit{Data Preprocessing} will be divided into two parts: \textit{Train Data Conversion} and \textit{Train Data Cleaning}.
+To determine how to prepare the data for scene analysis, we created an overall architecture of the data processing, which can be viewed on \textbf{\autoref{fig:DataArchitecture}}. The three different components, namely \textit{Data Preprocessing}, \textit{Data Pipeline} and \textit{Test Preprocessing} will be described in the following sections. %The \textit{Data Preprocessing} will be divided into two parts: \textit{Train Data Conversion} and \textit{Train Data Cleaning}.
 
 \subsection{Frameworks and Libraries}
 %Python, pandas etc
 
-\subsection{Train Data Conversion}
-This process is a part of the \textit{Data Preprocessing} component depicted on \textbf{\autoref{fig:DataArchitecture}}. The first folder in the data source is the \textit{TRAIN} folder, which contains files on the regular text format, which we want to convert to \gls{json} format. The reason for this conversion is that \gls{json} is a universal data object format, supported by most languages by default or by adding a library. Additionally, we have chosen to remove the file structure, which first partitions the data into site and then floor level to instead simply add this information within each new \gls{json} file. This would result in \gls{json} files with a similar structure to \textbf{\autoref{fig:jsonformat}}.
-
-\begin{figure}[H]
-\lstset{numbers=left}
-\begin{lstlisting}
-{ 
-    siteID:
-    siteName:
-    floorLevel:
-    pathID:
-    startTime:
-    sensorData: 
-        [
-            {
-                attributesFromKaggle
-                label { x, y } // closest waypoint
-            },
-            {
-                attributesFromKaggle
-                label { x, y } // closest waypoint
-            },
-            ...
-        ]
-}
-\end{lstlisting}
-\caption{The \gls{json} format we have converted the data into.}
-\label{fig:jsonformat}
-\end{figure}
-
-As seen on \textbf{\autoref{fig:jsonformat}}, each file contains information about which site (ID and name) and floor level the specific path has been measured at, alongside the ID of the path and a timestamp of when the measurement has begun. Lastly is an array containing the different sensor observations from the original path file. Each observation contains the original attributes, and we have determined and added the closest waypoint to each observation. The closest waypoint is determined by the timestamps meaning that the x- and y-coordinates for a sensor measurement are determined by the waypoint which is closest to the measurement. 
-
-\subsection{Train Data Cleaning}
-After processing the data to a new format, a level of data cleaning should also be enforced. This is concerned with normalising the floor level format to the same as the submission format. In the \gls{json} files the redundant data will be removed to minimise the size of each file. %Skal uddybes hvad er
-
-%Problemet med new lines
-
-%Outlier detection and removal such as looking whether the accelorometer values are proper.
+\subsection{Data Preprocessing}
 
 
 \subsection{Data Pipeline} \label{sec:datapipeline}
 After preprocessing, the data should be formatted after specific machine learning algorithms, which is depicted in \textbf{\autoref{fig:DataArchitecture}} as \textit{Data Pipeline}.
 
 \subsection{Test Data Preprocessing}
+
+
+\section{Data Preprocessing}
+This process section describes the \textit{Data Preprocessing} component depicted on \textbf{\autoref{fig:DataArchitecture}}. The first folder in the data source is the \textit{TRAIN} folder, which contains files on the regular text format, which we want to format differently. The reason for this is to more easily work with the data. Additionally, we have chosen to remove the file structure, which first partitions the data into site and then floor level to instead simply add this information within each new \textit{txt} file.
+
+A level of data cleaning should also be enforced in the \textit{Data Preprocessing} phase. This is among other concerned with normalising the floor level format to the same as the submission format, which is of type Integer. This is due to floors being denoted in dataset either as "\textit{F1}", "\textit{1F}" or "\textit{L1}", therefore to compare to more easily we have normalised this to "0" for all of the previous cases. In the metadata most of the floors has been defined with an integer. In case the floors are above ground the value has to subtracted by one, because of the way it has been illustrated in the metadata. The floors which are not available in the metadata has been converted manually from the know values to the desired integer. When adding the manual conversion every floor is convertible meaning this operation does not exclude any data.
+
+%Problemet med new lines
+%In the training files, you may find occasionally that a line is missing the ending newline character, causing it to run on to the next line. It is up to you how you want to handle this issue. This issue is not found in the test data.
+%Additionally, as mentioned in \textbf{\autoref{sec:dataset}}, there is missing some new line characters in the dataset. This issue is handled by l
+%Outlier detection and removal such as looking whether the accelorometer values are proper.
+
+%In the \gls{json} files the redundant data will be removed to minimise the size of each file. %Skal uddybes hvad er
+At the beginning of each file a variety of information was displayed, most of the was removed since it was redundant for the experiments we are to conduct. Now only site id, site name and path ID is stored at the beginning of each file. All this formatting and cleaning would result in \textit{txt} files with a similar structure to \textbf{\autoref{fig:newformat}}.
+
+%The reason for this conversion is that \gls{json} is a universal data object format, supported by most languages by default or by adding a library. Additionally, we have chosen to remove the file structure, which first partitions the data into site and then floor level to instead simply add this information within each new \gls{json} file. This would result in \gls{json} files with a similar structure to \textbf{\autoref{fig:jsonformat}}.
+
+\begin{figure}[H]
+\lstset{numbers=left}
+\begin{lstlisting}[language=Python]
+#	5a0546857ecc773753327266
+#	Xixi Yintai City
+#	5d134069ffe23f000860512b
+[...]273    TYPE_WAYPOINT                   [WAYPOINT 1]	  [WAYPOINT 2]      ...
+[...]425    TYPE_ACCELEROMETER	            -1.1477051      1.6084747	        ...
+[...]425    TYPE_MAGNETIC_FIELD	            9.970093        31.666565	        ...
+[...]425    TYPE_GYROSCOPE	                0.23286438      -0.18293762	      ...
+[...]425    TYPE_ROTATION_VECTOR            0.09658819	    0.061834227       ...
+[...]425    TYPE_MAGNETIC_FIELD_UNCALI..    -95.12787	      -39.694214        ...
+[...]425    TYPE_GYROSCOPE_UNCALI..	        0.2890625	      -0.26670837       ...
+[...]425    TYPE_ACCELEROMETER_UNCALI..	    -1.1441193	    1.7066345         ...
+
+...
+
+#	1561454731737
+\end{lstlisting}
+\caption{The \textit{txt} format we have converted the data into.}
+\label{fig:newformat}
+\end{figure}
+%begin{figure}[H]
+%\lstset{numbers=left}
+%\begin{lstlisting}
+%{ 
+    %siteID:
+    %siteName:
+    %floorLevel:
+    %pathID:
+    %startTime:
+    %sensorData: 
+        %[
+            %{
+                %attributesFromKaggle
+                %label { x, y } // closest waypoint
+            %},
+            %{
+                %attributesFromKaggle
+                %label { x, y } // closest waypoint
+            %},
+            %...
+       %]
+%}
+%\end{lstlisting}
+%\caption{The \gls{json} format we have converted the data into.}
+%\label{fig:jsonformat}
+%\end{figure}
+
+As seen on \textbf{\autoref{fig:newformat}}, displays the formatted data. Similar to the previous structure, the file is of \textit{txt} format and the attributes on each line is tab separated. Each file contains information about site ID (\textit{line 1}), site name (\textit{line 2}) and path ID (\textit{line 3}).
+
+%floor level the specific path has been measured at, alongside the ID of the path and a timestamp of when the measurement has begun.
+On \textit{line 4} to \textit{line 11}, we see the data on a similar format to the provided by Kaggle. Each entry is firstly described by a timestamp. The second field indicates the type of data, where \textit{line 4} on \textit{line 4} is the data of type waypoint. This has been restructured from the original, where each tab separated field after the '\textit{TYPE\_WAYPOINT}' is a waypoint from this path. The reason for gathering the waypoints at the top of the file is to make it easily accessible (for example when extracting the ground truth data in \textbf{\autoref{fig:DataArchitecture}}). The content and structure of '\textit{[WAYPOINT 1]}' can be viewed on \textbf{\autoref{fig:waypointformat}}. The timestamp on \textit{line 4} indicates the start time for the path. Thereafter, it is all the sensor observations similar to the original dataset. Lastly, in each file is the end time of the path.
+
+\begin{figure}[H]
+\lstset{numbers=left}
+\begin{lstlisting}[language=Python]
+1561454339274,1,78.25796,11.443387
+\end{lstlisting}
+\caption{An example of a waypoint}
+\label{fig:waypointformat}
+\end{figure}
+
+On \textbf{\autoref{fig:newformat}} \textit{line 4}, the different waypoints have been abstracted away. An example of one of these waypoints can be viewed on \textbf{\autoref{fig:waypointformat}}, which displays both the structure and content of a waypoint. The waypoints object are comma separated and contains 4 values, namely; timestamp, floor level, x-coordinate and y-coordinate.
+
+%Lastly is an array containing the different sensor observations from the original path file. Each observation contains the original attributes, and we have determined and added the closest waypoint to each observation. The closest waypoint is determined by the timestamps meaning that the x- and y-coordinates for a sensor measurement are determined by the waypoint which is closest to the measurement. 
