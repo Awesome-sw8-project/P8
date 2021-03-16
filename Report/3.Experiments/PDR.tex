@@ -1,10 +1,6 @@
 \section{Pedestrian Dead Reckoning}
 
-The \gls{pdr} method is described in \cite{HybridPositioningPaper}. 
-
-
-
-\gls{pdr} tracking is based on step detection algorithms, step length estimations $l_t$ and heading measurements $\theta_t$, all used to solve the problem defined in \textbf{\autoref{eq:pdr_x}} and \textbf{\autoref{eq:pdr_y}}.
+The \gls{pdr} method is described in \cite{HybridPositioningPaper}. \gls{pdr} tracking is based on step detection algorithms, step length estimations $l_t$ and heading measurements $\theta_t$, all used to solve the problem defined in \textbf{\autoref{eq:pdr_x}} and \textbf{\autoref{eq:pdr_y}}.
 
 \begin{equation} \label{eq:pdr_x}
     x_t = x_{t - 1} + l_t\cos(\theta_t)
@@ -14,6 +10,11 @@ The \gls{pdr} method is described in \cite{HybridPositioningPaper}.
     y_t = y_{t - 1} + l_t\sin(\theta_t)
 \end{equation}
 
+\begin{figure}[H] \label{fig:pdr}
+    \centering
+    \includegraphics[scale=0.6]{Images/Experiments/pdr.png}
+    \caption{Caption}
+\end{figure}
 
 % Tag elementer fra filen geometry_based.tex fra 1.Problem_analysis til forklaring af PDR.
 
