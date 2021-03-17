@@ -1,5 +1,8 @@
 \section{Pedestrian Dead Reckoning}
 
+
+
+
 The \gls{pdr} method is described in \cite{HybridPositioningPaper}. \gls{pdr} tracking is based on step detection algorithms, step length estimations $l_t$ and heading measurements $\theta_t$, all used to solve the problem defined in \textbf{\autoref{eq:pdr_x}} and \textbf{\autoref{eq:pdr_y}}.
 
 \begin{equation} \label{eq:pdr_x}
@@ -12,8 +15,8 @@ The \gls{pdr} method is described in \cite{HybridPositioningPaper}. \gls{pdr} tr
 
 \begin{figure}[H] \label{fig:pdr}
     \centering
-    \includegraphics[scale=0.8]{Images/Experiments/pdr.pdf}
-    \caption{Caption}
+    \includegraphics[scale=0.9]{Images/Experiments/pdr.pdf}
+    \caption{PDR implementation architecture.}
 \end{figure}
 
 % Tag elementer fra filen geometry_based.tex fra 1.Problem_analysis til forklaring af PDR.
@@ -34,7 +37,7 @@ The general idea of step detection of a pedestrian with a smartphone is by measu
 
 The algorithm is based on the principle of dispersion, which is the extent to which a distribution is stretched or squeezed. %https://en.wikipedia.org/wiki/Statistical_dispersion#cite_note-1
 
-In this case, the algorithm will return a signal value if a new datapoint is a specific amount of deviations away from a moving mean. This amount of deviations is also called the z-score. The algorithm creates a seperate moving mean and deviation, and signals can therefore not corrupt the threshold. The algorithm takes 3 inputs: lag, threshold and influence. Lag determines how much the input data is to be smoothened. Therefore, low lag values result in the algorithm being quicker at adapting to the input data. Since the input data for step detection vary a lot, the lag value will be low. The threshold is the z-score at which the algorithm will return a signal. Lastly, the influence is the impact of new signals on the mean and deviation. The influence can be between 0 and 1. If 0 is chosen as the influence, signals would be completely ignored for recalculation of a new threshold. This choice would assume stationarity, meaning that the statistical properties of a process, such as the mean, variance and the structure of the autocorrelation, do not change over time. In our case, we are working with data from walking people in a shopping mall, and since random walking is not a stationary process, we will use 1 as our influence. 
+In this case, the algorithm will return a signal value if a new datapoint is a specific amount of deviations away from a moving mean. This amount of deviations is also called the z-score. The algorithm creates a separate moving mean and deviation, and signals can therefore not corrupt the threshold. The algorithm takes 3 inputs: lag, threshold and influence. Lag determines how much the input data is to be smoothened. Therefore, low lag values result in the algorithm being quicker at adapting to the input data. Since the input data for step detection vary a lot, the lag value will be low. The threshold is the z-score at which the algorithm will return a signal. Lastly, the influence is the impact of new signals on the mean and deviation. The influence can be between 0 and 1. If 0 is chosen as the influence, signals would be completely ignored for recalculation of a new threshold. This choice would assume stationarity, meaning that the statistical properties of a process, such as the mean, variance and the structure of the autocorrelation, do not change over time. In our case, we are working with data from walking people in a shopping mall, and since random walking is not a stationary process, we will use 1 as our influence. 
 
 + lag 
 + threshold
