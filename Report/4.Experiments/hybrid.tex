@@ -1,0 +1,13 @@
+\section{Hybrid}
+As presented in \textbf{\autoref{sec:IMUPositioning_eval}}, the \gls{pdr} algorithm with Madgwick Filter performs better compared to the \gls{pdr} algorithm with Extended Kalman Filter. For that reason, the \gls{pdr} algorithm with Madgwick Filter will be our choice for the experiment with the hybrid solution. For the \gls{lfp}, we will be using \gls{gbdt} for the testing of the hybrid implementations.
+%Furthermore, as presented in this chapter, <INSERT ML ALGORITHM HERE> performs best according to the \gls{rmse} metric, which is why the hybrid is implemented using \gls{pdr} with Madgwick for heading estimation and <INSERT ML ALGORITHM HERE>. 
+To evaluate the hybrid, we have used the feature engineering for the hybrid mentioned in \autoref{sec:feature_eng}.
+
+\subsection*{LFP as Primary}
+As mentioned in \textbf{\autoref{sec:hybrid_theory}}, \gls{pdr} is used whenever there is no \gls{rssi} data available for a timestamp. Furthermore, \gls{pdr} is also used when there are no \gls{rssi} data available for more than a second. To make sure the \gls{pdr} estimations are accurate, \gls{pdr} is re-calibrated to the last estimated position by \gls{lfp} whenever \gls{pdr} is used.
+
+\subsection*{PDR as Primary}
+As mentioned in \textbf{\autoref{sec:hybrid_theory}}, \gls{pdr} must be re-calibrated after a fixed amount of measurements to ensure \gls{pdr} will not drift too far off the ground truth position. This fixed number of measurements before re-calibrating \gls{pdr} is set to 200, since this is the average number of measurements before \gls{pdr} estimates positions that are further off the \gls{mpe} of \gls{gbdt} according to the \gls{pdr} experiments seen in \textbf{\autoref{PDR:results}}.
+
+\subsection*{Average}
+As for \gls{pdr} as primary, \gls{pdr} is re-calibrated after 200 measurements for the same reasons. In case a position cannot be estimated by \gls{lfp} because no \gls{rssi} data are available, the position is estimated from \gls{pdr} alone.

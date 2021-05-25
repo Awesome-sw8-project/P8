@@ -1,0 +1,28 @@
+\section{Experiments Evaluation}
+To evaluate and compare the different indoor position estimation methods, we have divided the \gls{rssi}-feature engineering output into two part for each site, where the first part will be used to train final models for each site for each \gls{lfp} algorithm, which we would like to test. The second part will be used to evaluate the algorithms in terms of the \gls{mpe} and \gls{mse} with respect to X, Y, and floor.  Due to time constraints and the considerable amount of time necessary to evaluate the \gls{pdr}, which is used to varying degrees by the hybrid implementation, we have decided to evaluate using 5 sites as a sample of the dataset.
+
+%\subsection*{Final ANN Model}
+%In our \gls{ann} experiments, we have identified the initial model with a learning rate of 0.001 and a min-max normalised dataset to be the optimal set of hyperparameters. Based on this, we have trained a model of half of the dataset and calculated the \gls{mpe} and \gls{rmse} for the model. The average \gls{mpe} for all of the sites is 30.55. 
+
+%\subsection*{Final GBDT Model}
+%Our final \gls{gbdt} utilises the parameters discovered 
+As seen in \textbf{\autoref{tab:alg_performances}} an overview over all algorithms is shown with their corespondent evaluations. In terms of the machine learning algorithms, the \gls{gbdt} performs best and is also the reasoning behind using \gls{gbdt} in the hybrid models. Looking at the different hybrid algorithms, the \gls{pdr} as primary makes a best prediction on \textit{X} and \textit{Y}, getting a \gls{rmse} on $10.85$ and $10.9$. However, the \gls{lfp} as primary algorithm has better prediction on floor with a \gls{rmse} on $0.00$. 
+Therefore, the \gls{pdr} as primary hybrid algorithm is going to be the algorithm that we choose for our system. However, a combination of the different hybrids would be optimal, where the prediction of \textit{X} and \textit{Y} will be the hybrid, where \gls{pdr} is primary and the prediction of floor will then be the hybrid, where \gls{lfp} is primary. 
+
+
+% Skriv, at vi ved Average Hybrid har sat recalibration limit til 200, da det er er det gennemsnitlige antal measurements før at PDR får en position error over 8. Tallet 8 er valdt, da det er mean position error for LightGBM rundet op.
+\begin{table}[H]
+    \centering
+    \caption{Overview over performances of indoor position estimation methods.}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{m{0.33\textwidth}@{\extracolsep{0.1cm}}m{0.1\textwidth} m{0.1\textwidth}m{0.1\textwidth}m{0.1\textwidth}}
+    \hline
+         \multicolumn{1}{c}{\textbf{Algorithm}} & \multicolumn{1}{c}{\textbf{Mean \gls{mpe}}} & \multicolumn{1}{c}{\textbf{Mean \gls{rmse} (X)}} & \multicolumn{1}{c}{\textbf{Mean \gls{rmse} (Y)}} & \multicolumn{1}{c}{\textbf{Mean \gls{rmse} (Floor)}}\\\hline
+         \acrlong{ann} & \multicolumn{1}{c}{30.55} & \multicolumn{1}{c}{25.71} &\multicolumn{1}{c}{23.68} &\multicolumn{1}{c}{0.43} \\
+         \acrlong{gbdt} & \multicolumn{1}{c}{23.21} & \multicolumn{1}{c}{17.36} &\multicolumn{1}{c}{21.70} &\multicolumn{1}{c}{} \\
+         LFP as Primary & \multicolumn{1}{c}{32.36} & \multicolumn{1}{c}{43.88} &\multicolumn{1}{c}{61.27} &\multicolumn{1}{c}{0.00} \\
+         PDR as Primary & \multicolumn{1}{c}{18.59} & \multicolumn{1}{c}{10.85} &\multicolumn{1}{c}{10.9} &\multicolumn{1}{c}{0.52} \\
+         Average Hybrid & \multicolumn{1}{c}{37.69} & \multicolumn{1}{c}{19.95} &\multicolumn{1}{c}{12.40} &\multicolumn{1}{c}{0.80} \\\hline 
+    \end{tabular}}
+    \label{tab:alg_performances}
+\end{table}

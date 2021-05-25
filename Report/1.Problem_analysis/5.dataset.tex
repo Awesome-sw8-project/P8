@@ -1,15 +1,15 @@
 \section{Data Analysis}\label{sec:data}
-The location estimates or predictions for the competition should be based on the available data, and the quality and distribution of the data will affect the accuracy of location estimates. Therefore, it is important to inspect and analyse the data to ensure the best possible grounds for a prediction.
+The location estimates for the competition should be based on the available data, and the quality and distribution of the data will affect the accuracy of location estimates. Therefore, it is important to inspect and analyse the data to ensure better grounds for predictions.
 
 \subsection{Data Introduction} \label{sec:dataset} 
 %Structure of data
 For the aforementioned competition, a dataset is provided for the purpose of predicting indoor positions of mobile devices. The dataset is divided into three folders, namely \textit{metadata}, \textit{train} and \textit{test}. The \textit{metadata} and \textit{train} folders are partitioned by site and then by floor. The \textit{metadata} folder contains information about the floors of each site in the \textit{train} folder, which includes the spatial properties of the floor. The \textit{train} and \textit{test} folder contain similar structured files. Each file contains information about a particular trace and observed sensor data. All the data is collected from Android smartphones.\cite{KaggleData}
 
-The first column is a timestamp indicating when the data was gathered. The second column specifies the type of sensor which the data is gathered from. This type also specifies the belonging attributes of that data gathering. The different types of data gathered is as follows\cite{KaggleDataGithub}:
+The first column is a timestamp indicating when the data was gathered. The second column specifies the type of sensor from which the data is gathered from. This type also specifies the belonging attributes of that data gathering. The different types of data gathered is as follows\cite{KaggleDataGithub}:
 
 \begin{longtable}{ p{.3\textwidth}  p{.61\textwidth}}
 
-\textbf{TYPE\_ACCELEROMETER} & The values are in \acrshort{SI} units $m/s^2$. The measurements are computed by measuring the acceleration applied to the device, by measuring the forces applied to the sensor\cite{sensorevent}.
+\textbf{TYPE\_ACCELEROMETER} & The values are in standard international units $m/s^2$. The measurements are computed by measuring the acceleration applied to the device by measuring the forces applied to the sensor\cite{sensorevent}.
 \\\\
 
 \textbf{TYPE\_ACCELEROMETER\_ \newline UNCALIBRATED} & Same as aforementioned, but without the bias estimate, which is the difference between the estimator's expected value and the true value of the parameter being estimated\cite{sensorevent}.
@@ -23,16 +23,16 @@ The first column is a timestamp indicating when the data was gathered. The secon
 \\\\
 
 
-\textbf{TYPE\_GYROSCOPE} & The values are in radians/seconds, and measures the rate of rotation around the device's local X, Y and Z axis\cite{sensorevent}.
+\textbf{TYPE\_GYROSCOPE} & The values are in radians per seconds, and measures the rate of rotation around the device's local X, Y and Z axis\cite{sensorevent}.
 \\\\
 
 \textbf{TYPE\_GYROSCOPE\_ \newline UNCALIBRATED} & Same as aforementioned, but the given sensor values are not adjusted by performing gyro-drift compensation, which is used for increasing the accuracy of the measurements\cite{sensorevent}.
 \\\\
 
-\textbf{TYPE\_WIFI} &  This type consists of a \gls{ssid} and \gls{bssid}, which is the name of the network and the address of the access point. It also consists of the \gls{rssi}, which is the detected signal strength measured in \gls{dbm}, and the frequency of the channel, in which the client is communicating with the access point. Furthermore, it includes a timestamp, which states when the measurement was last gathered.\cite{wifiandroid}
+\textbf{TYPE\_WIFI} &  This type consists of a Service Set identifier (SSID) and \gls{bssid}, which is the name of the network and the address of the access point. It also consists of the \gls{rssi}, which is the detected signal strength measured in \gls{dbm}, and the frequency of the channel, in which the client is communicating with the access point. Furthermore, it includes a timestamp, which states when the measurement was last gathered.\cite{wifiandroid}
 \\\\
 
-\textbf{TYPE\_BEACON} & This type consists of three types of identifications: \gls{uuid}, Major ID and Minor ID. The \gls{uuid} is the identifier for identifying a group of beacons. The Major ID identifies a sub-region within a larger region defined by the \gls{uuid}, and the Minor ID specifies further subdivision within a Major ID. The distance from the beacon is measured through \gls{rssi} and the \textit{TxPower}, which is the measured power in \gls{dbm} from 1 meter of distance to the beacon.\cite{beaconsinfo}
+\textbf{TYPE\_BEACON} & This type consists of three types of identifications: Universally unique identifier (UUID), Major ID and Minor ID. The UUID is the identifier for identifying a group of beacons. The Major ID identifies a sub-region within a larger region defined by the UUID, and the Minor ID specifies further subdivision within a Major ID. The distance from the beacon is measured with \gls{rssi} and the \textit{TxPower}, which is the measured power in \gls{dbm} from 1 meter of distance to the beacon.\cite{beaconsinfo}
 \\\\
 
 \textbf{TYPE\_ROTATION\_ \newline VECTOR} & The rotation vector represents the orientation of the device as a combination of an angle and an axis, wherein the device has rotated\cite{sensorevent}.
@@ -45,11 +45,11 @@ The first column is a timestamp indicating when the data was gathered. The secon
 
 The rest of the columns are deemed by the type of data gathered, but essentially describes the value of the given sensor's callback function at the given timestamp. The different sensors are elaborated on in \textbf{\autoref{sec:actuator_sensor}}. The last type denoted above is the TYPE\_WAYPOINT, which is the ground truth location labeled by the surveyor.\cite{KaggleDataGithub} In the training data, some occasional new lines are missing, which cause the system to skip to the next line. This issue should be resolved to utilise all the training data.\cite{KaggleData}
 
-When working with the data, we observed that the floor levels are labelled different from the value to be submitted. Namely, "\textit{F1}", "\textit{L1}" and "\textit{1F}" instead of the label that should be written in the submission file, which would be "\textit{0}". To utilise all the data, we need to transform the data to use the same name.
+When working with the data, we observed that the floor levels are labelled different from the value to be submitted. This needs to be standardised. For example, instead of the labels like "\textit{F1}", "\textit{L1}" and "\textit{1F}", "\textit{0}" should be written in the submission file. To utilise all the data, we need to transform the data to use the same name.
 
-\subsection{Competition-Defined Test Data}
-The last folder, \textit{test}, contains the data needed for position estimates. The folder has similarly structured data to the \textit{train} folder, though it does not organise the data into floors, since this should be predicted. Each file contains a trace to predict a precise location (TYPE\_WAYPOINT) and floor level from. The predictions should be submitted in a CSV file similar to the sample submission described in \textbf{\autoref{sec:kaggleComp}}.\cite{KaggleData}
+%\subsection{Competition-Defined Test Data}
+The last folder, \textit{test}, contains the data needed for position estimates. The folder has similarly structured data to the \textit{train} folder, though it does not organise the data into floors, since this should be predicted. Each file contains a trace to predict an accurate location (TYPE\_WAYPOINT) and floor level from. This test data could be used in predictions made for the evaluation made by the competition hosts described in \textbf{\autoref{sec:kaggleComp}}.\cite{KaggleData}
 
-The sample submission file contains information about the locations to calculate. From this we have determined that there exists 10133 locations to predict, which are described by timestamp, path IDs and site IDs. We have discovered that these locations are distributed over 626 paths over 24 sites.
+The sample submission file (CSV file) contains information about the locations to calculate. From this we have determined that there exists 10133 locations to predict, which are described by a timestamp, path IDs and site IDs. We have discovered that these locations are distributed over 626 paths over 24 sites.
 
 % We looked into whether the test sites were present in the train data or the metadata as well, and found that there exists one site, which is not present in the training data, nor the metadata. This one site is represented through 3 paths together containing 26 locations to be predicted upon. This could prove to be difficult to determine locations from, since we have no information about the site.

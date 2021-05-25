@@ -1,0 +1,26 @@
+\section{Long Short-Term Memory}
+We have tested \gls{lstm} with the following hyper-parameters. 
+\begin{table}[H]
+    \centering
+    \caption{Model Specification for a deeper \gls{lstm} experiment.}
+    \begin{tabular}{m{0.3\textwidth}m{0.2\textwidth} m{0.2\textwidth}}
+        \hline
+        \multicolumn{1}{c}{\textbf{Description}} & \multicolumn{1}{c}{\textbf{Neurons}} & \multicolumn{1}{c}{\textbf{Activation}}\\
+        \hline
+        
+        Input Layer         &   \multicolumn{1}{c}{$N$} & \multicolumn{1}{c}{None}        \\
+        Masking Layer     & \multicolumn{1}{c}{None}    &  \multicolumn{1}{c}{None}    \\
+        1. LSTM Layer     &   \multicolumn{1}{c}{$\frac{1}{4}N$}  & \multicolumn{1}{c}{ReLU}     \\
+        Output LSTM Layer         &   \multicolumn{1}{c}{$1$} & \multicolumn{1}{c}{None}        \\
+        \hline
+    \end{tabular}
+    \label{tab:lstm}
+\end{table}
+For the training of the model, we have used the optimiser Adam and \gls{mse} as loss function. Due to the varying sizes of the samples in the dataset, we have used the technique padding, which a way to tell the model that certain \gls{rssi} features are missing. In padding, these missing \gls{rssi} features have to be either at beginning of at the end of the sample. The utilisation of padding is in the form of the \textit{Masking Layer} in the model. 
+
+The model ends up with 0.32 as both the means of training and validation losses for the X predictions. For the Y predictions, we get 0.24 for both the means of training and validations losses for all sites. For the floors, we get 0.00010 as the loss for both the training and validation loss. In terms of fitting, the data seems to fit well to the models as the difference in the training and validation losses seems to be in the decimals. However, we do observe an issue when considering the \gls{mpe}. The mean of \gls{mpe}s for the sites are at 30.02, which quite high compared to the training and validation loss. Even when comparing the \gls{rmse} for each of the estimations, the \gls{mpe} still seems high, but these metrics should be comparable. Initially, we thought it was an issue with the exploding gradient problem mentioned in \textbf{\autoref{sec:problemsmachinelearning}} as we did observe that the loss sometimes jumps to 0, which might be due to an overflow in the gradient, and it might be library's way to represent this instead of NaN. However, we did test with gradient clipping which did not improve the results. 
+
+The issue most likely lies is in the padding approach, which we apply to consider all samples in the dataset with less features than the sample with maximum amount of features. The model seems to not work well with padded input when using the model to predict, which is used when calculating the \gls{mpe}. To mitigate this issue, it might be necessary to reconsider the sample sizes for the inputs and thereby removing the need for padding. Due to time constraints, we cannot implement this, and as the results of the model is quite inconsistent, we will not consider this algorithm when evaluating the different algorithms.
+
+%Even through the results seem better than e.g. the \gls{ann} experiments, this might be due to how the dataset is created. 
+%During the training of the model, we observe the exploding gradient problem mentioned in \textbf{\autoref{sec:problemsmachinelearning}}. To mitigate this issue, we have tried to decrease the learning rate to 0.00001 and set gradient clipping of the value to 1/0.5. However, this has not been helpful for training the model. A solution to this could perhaps be to select a different initialisation strategy for the weights, but as we are limited on time, we cannot test this. 

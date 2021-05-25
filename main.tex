@@ -2,7 +2,7 @@
 \input{"AAUImport"/setup/hyphenations.tex}
 \input{"AAUImport"/setup/macros.tex}
 
-\usepackage{subcaption}
+%\usepackage{subcaption}
 \usepackage{booktabs}
 \usepackage[norule]{footmisc} %used to remove rule from footnotes
 \usepackage{longtable} %used for the semantic rule tables
@@ -32,6 +32,9 @@
 \usepackage{multicol}
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{figsize}
+\usepackage{multirow}
+
 
 \definecolor{OliveGreen}{rgb}{0,0.6,0}
 \definecolor{myorange}{rgb}{1.0, 0.63, 0.48}
@@ -86,6 +89,7 @@
     \def\subsubsectionautorefname{Section}
     \def\tableautorefname{Table}
     \def\figureautorefname{Figure}
+    \def\algorithmautorefname{Algorithm}
 }
 \makeatletter
 \pretocmd{\part}{\addtocontents{toc}{\protect\addvspace{-8\p@}}}{}{}
@@ -146,6 +150,9 @@
 
 \chapter*{Preface}
 \input{Report/preface}
+
+\renewcommand{\glsgroupskip}{}
+\printglossaries
 \newpage\pagenumbering{arabic}
 
 \part{Introduction \& Analysis}
@@ -167,29 +174,47 @@
 %\input{Report/1.Problem_analysis/existingframeworks}
 \input{Report/1.Problem_analysis/8.ProblemStatement}
 
-\chapter{Data Standard}
+\chapter{Data Processing}
 \input{Report/2.DataStandard/DesignChoice}
-\input{Report/2.DataStandard/datapipeline}
+\input{Report/2.DataStandard/Feature_Engineering}
+
+\part{Theory \& Experiments}
+\chapter{Indoor Position Methods Theory}
+\input{Report/3.Theory/metaTheory}
+\input{Report/3.Theory/PDR}
+\input{Report/3.Theory/NeuralNetwork}
+\input{Report/3.Theory/RNN}
+\input{Report/3.Theory/lightGBM}
+\input{Report/3.Theory/Problems}
+\input{Report/3.Theory/hybrid}
 
 \chapter{Experiments}
-\input{Report/3.Experiments/designChoices}
-\input{Report/3.Experiments/PDR}
+\input{Report/4.Experiments/1.intro}
+\input{Report/4.Experiments/2.TaskDefinition}
+\input{Report/4.Experiments/designChoices}
+\input{Report/4.Experiments/PDR_eval}
+\input{Report/4.Experiments/NNeval}
+\input{Report/4.Experiments/LSTMevel}
+\input{Report/4.Experiments/lightgbm}
+\input{Report/4.Experiments/hybrid}
+\input{Report/4.Experiments/evaluation}
 
 \chapter{Technology}
-\input{Report/4.Technology/Mobility}
+\input{Report/5.Technology/MetaTech}
+\input{Report/5.Technology/Mobility}
+\input{Report/5.Technology/Architecture}
 
-\chapter{Design}
+\chapter{Discussion}
+\input{Report/7.Evaluation/Discussion}
 
-\chapter{Implementation}
-
-\chapter{Evaluation}
-
+\chapter{Conclusion}
+\input{Report/7.Evaluation/Conclusion}
 \newpage
 \listoftodos
 \newpage
 
-\renewcommand{\glsgroupskip}{}
-\printglossaries
+%\renewcommand{\glsgroupskip}{}
+%\printglossaries
 
 \addcontentsline{toc}{chapter}{References}
 
@@ -197,6 +222,8 @@
 
 \part{Appendix}
 \appendix
+\chapter{PDR Evaluation}\label{PDR:results}
+\input{Report/Appendix/pdr_evaluation}
 
 %\markdownInput{offline.md}
 

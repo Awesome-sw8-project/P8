@@ -2,7 +2,7 @@
 \input{"AAUImport"/setup/hyphenations.tex}
 \input{"AAUImport"/setup/macros.tex}
 
-\usepackage{subcaption}
+%\usepackage{subcaption}
 \usepackage{booktabs}
 \usepackage[norule]{footmisc} %used to remove rule from footnotes
 \usepackage{longtable} %used for the semantic rule tables
@@ -15,7 +15,9 @@
 %\usepackage{subfig}
 \usepackage{afterpage}
 \usepackage{listings}
-\usepackage[colorinlistoftodos,textwidth=\marginparwidth]{todonotes}
+
+\usepackage{morewrites}
+
 \usepackage{xpatch,letltxmacro}
 \usepackage{longtable}
 \usepackage{pgfplots}
@@ -23,16 +25,31 @@
 \usepackage{lipsum}
 \usepackage{pdfpages}
 \usepackage{glossaries}
+%\usepackage{glossaries-extra}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage[color, leftbars]{changebar}
+\usepackage{multicol}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{figsize}
 
+
+
+\definecolor{OliveGreen}{rgb}{0,0.6,0}
+\definecolor{myorange}{rgb}{1.0, 0.63, 0.48}
+\definecolor{mygreen}{rgb}{0.74, 0.85, 0.34}
+\definecolor{myblue}{rgb}{0, 240, 240}
+
+\setlength\changebarsep{5pt}
 
 \makeglossaries
 \loadglsentries{glossaries.tex}
 
 \pgfplotsset{width=10cm,compat=1.9}
 
-
 \usemintedstyle{}
-\newcommand\mynumberformat{\def\FancyVerbFormatLine##1{{\theFancyVerbLine} ##1}}
+\newcommand\mynumberformat{\def\FancyVerbFormamtLine##1{{\theFancyVerbLine} ##1}}
 \LetLtxMacro{\cmintedlinenos}{\minted}
 \let\endcmintedlinenos\endminted
 \xpretocmd{\cmintedlinenos}{\setminted{linenos=true}\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{formatcom=\mynumberformat}{}}{}{}
@@ -64,23 +81,58 @@
     \newpage}
 
 \usepackage{etoolbox}
-
+\usepackage{hyperref}
+\addto\extrasenglish{
+    \def\chapterautorefname{Chapter}
+    \def\sectionautorefname{Section}
+    \def\subsectionautorefname{Section}
+    \def\subsubsectionautorefname{Section}
+    \def\tableautorefname{Table}
+    \def\figureautorefname{Figure}
+}
 \makeatletter
-\pretocmd{\chapter}{\addtocontents{toc}{\protect\addvspace{-3\p@}}}{}{}
-\pretocmd{\section}{\addtocontents{toc}{\protect\addvspace{-5\p@}}}{}{}
+\pretocmd{\part}{\addtocontents{toc}{\protect\addvspace{-8\p@}}}{}{}
+\pretocmd{\chapter}{\addtocontents{toc}{\protect\addvspace{-5\p@}}}{}{}
+\pretocmd{\section}{\addtocontents{toc}{\protect\addvspace{-6\p@}}}{}{}
+\pretocmd{\subsection}{\addtocontents{toc}{\protect\addvspace{-7\p@}}}{}{}
 \makeatother
 
-    
-    
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
 \begin{document}
 \pagestyle{empty} %disable headers and footers
 \pagenumbering{roman} %use roman page numbering in the frontmatter
 
-%\includepdf[pages=-]{ForsideGiraf.pdf}
-
-%\input{"AAUImport/sections/frontpage.tex"}%
-%\newpage
-%\input{"AAUImport/sections/titlepages.tex"}%
+%\includepdf[width=1.38\textwidth, pages=-]{Report/WORST.pdf}
+\input{"AAUImport/sections/frontpage.tex"}%
+\newpage
+\input{"AAUImport/sections/titlepages.tex"}%
 %\newpage
 %\input{"AAUImport/sections/preface.tex"}%
 %\input{"AAU Import/sections/introduction.tex"}
@@ -89,28 +141,55 @@
 \cleardoublepage
 \pdfbookmark[0]{Contents}{label:contents}
 \pagestyle{fancy} %enable headers and footers again
-\pagenumbering{arabic} 
-
-%\chapter*{Preface}
-%\input{Report/Preface.tex}
-%\newpage
+\pagenumbering{roman}
 
 \setcounter{tocdepth}{1}
 \tableofcontents
-\afterpage{\blankpage}
+%\afterpage{\blankpage}
 
-%\newpage
-%\listoftodos
-%\newpage
+\newpage\pagenumbering{arabic}
 
-%\addcontentsline{toc}{chapter}{References}
 
-\printbibliography
+\chapter{Data Standard}
+\input{Report/2.DataStandard/Feature_Engineering}
+
+\chapter{Indoor Position Methods Theory}
+\input{Report/3.Theory/PDR}
+\input{Report/3.Theory/lightGBM}
+\input{Report/3.Theory/NeuralNetwork}
+\input{Report/3.Theory/RNN}
+\input{Report/3.Theory/Problems}
+
+
+\chapter{Experiments}
+\input{Report/4.Experiments/PDR_eval}
+\input{Report/4.Experiments/NNeval}
+
+\chapter{Technology}
+\input{Report/5.Technology/Mobility}
+
+
+\newpage
+\listoftodos
+\newpage
+
+\renewcommand{\glsgroupskip}{}
 \printglossaries
 
-%\part{Appendices}
-\appendixpageoff
-\begin{appendices}
+\addcontentsline{toc}{chapter}{References}
 
-\end{appendices}
+\printbibliography
+
+\part{Appendix}
+\appendix
+\chapter{PDR Evaluation}\label{PDR:results}
+\input{Report/Appendix/pdr_evaluation}
+
+%\markdownInput{offline.md}
+
+%\part{Appendices}
+%\appendixpageoff
+%\begin{appendices}
+
+%\end{appendices}
 \end{document}

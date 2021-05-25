@@ -1,0 +1,102 @@
+\textit{In this chapter, we will discuss different aspects of the project. We will evaluate and give an overall status on the project requirements discussed in the problem statement. Also, the experiments will be discussed and reflected upon. Furthermore, we will reflect on how the dataset was pre-processed and what consequences it might have had.} 
+
+
+\section{Requirements Evaluation}
+
+In \textbf{\autoref{sec:requirements}}, we presented the requirements for this project. To summarize our process we have presented the same requirements in table \textbf{\autoref{table:requirements2}}, in addition with a completion status. 
+
+We define our system as the hybrid approach, where \gls{pdr} is used as the primary algorithm, and \gls{gbdt} as the secondary. 
+
+\vspace{12pt}
+\begin{table}[H]
+\caption{The requirements with index number, MoSCoW classification and a completion status. \textbf{F}, \textbf{PF}, and \textbf{NF} stand for fulfilled, partially fulfilled, and not fulfilled, respectively.}
+\begin{tabularx}{\textwidth}{| c | c | X | c | c | c |}
+\hline
+\textbf{Index} & \textbf{MoSCoW} & \textbf{Requirements} & \textbf{F} & \textbf{PF} & \textbf{NF}\\\hline
+
+R.1 & M & The system must estimate the indoor location (floor level, x- and y-coordinates). & \checkmark  & & \\\hline
+R.2 & M & The system must make use of data collected on a smartphone. & \checkmark & & \\\hline
+R.3 & M & The data must be processed and cleaned. & \checkmark & &\\\hline
+%R.4 & S & The system should perform at least equivalently in terms of \gls{mpe} to the Bronze ranked submissions in the Kaggle public leaderboard.\\\hline
+R.4 & C & The system could be implemented as a IPS  for smartphones. & & \checkmark & \\\hline
+R.5 & C & The system could make use of location fingerprinting. & \checkmark & &\\\hline
+R.6 & C & The method could incorporate IMU based method(s). & \checkmark & &\\\hline
+%R.7 & C & The system could be implemented as an Android service.\\\hline
+R.7 & C & The system could have a graphical user interface. & & & \checkmark \\\hline
+R.8 & W & The system is wanted to be deployable on smartphones. & & & \checkmark \\\hline
+\end{tabularx}
+\label{table:requirements2}
+\end{table}
+
+\begin{longtable}{p{.05\textwidth} p{.91\textwidth}}
+
+\textbf{R.1} & This requirement is fulfilled, and the results are shown in \textbf{\autoref{tab:alg_performances}}. Here, it is shown how \gls{pdr} as primary can estimate the X-coordinate with an \gls{rmse} of 10.85 m, the Y-coordinate with an \gls{rmse} of 10.9 m, and the floor level with an \gls{rmse} of 0.52 m.
+\\\\
+
+\textbf{R.2} & This requirement is fulfilled by the use of the dataset given by Kaggle. As described in \textbf{\autoref{sec:dataset}}, the data includes different types of data collected on a smartphone.
+\\\\
+
+\textbf{R.3} & As mentioned in \textbf{\autoref{sec:dataPreprocessing}}, prepossessing and cleaning of the data has been done. The relevant data is saved in \textit{.txt} files, with standardised floor levels, and the relevant information about the sites. 
+\\\\
+
+\textbf{R.4} & This requirement is set as partially fulfilled based on the fact that we have implemented a server, as mentioned in \textbf{\autoref{sec:final_architecture}}, but we have not implemented the client-side. We also deem our solution as an indoor positioning system, since it is possible to calculate a position when given a specific type of data. 
+\\\\
+
+\textbf{R.5} & In our final solution, we will use location fingerprinting for our secondary algorithm in our hybrid approach, and therefore, this requirement is deemed as fulfilled.
+\\\\
+
+\textbf{R.6} & Because we use \gls{pdr} as our primary algorithm, which is a IMU based method, this requirement is also fulfilled.
+\\\\
+
+\textbf{R.7} & We did not manage to fulfill this requirement. 
+\\\\
+
+\textbf{R.8} & As mentioned above in \textbf{R.4}, we have implemented the server, but we did not manage to finish the client-side. We have implemented the possibility to create Docker containers for deployment, but we have not finished the deployment for smartphones. 
+\\\\
+
+\end{longtable}
+\vspace{-24pt}
+
+\section{Data}
+After conducting the different experiments, certain consideration regarding the data can be made. Utilising different data or experimenting more through the feature engineering might lead to a dataset, which could be easier for the different models to classify more accurate locations on.
+
+\subsection{Threshold for \gls{bssid} values}
+The first consideration is regarding the threshold on the \gls{bssid} values of a 1000. This meaning that is a \gls{bssid} value is not present at least 1000 times, it is disregarded from the training data. The reason for choosing the occurrence threshold of 1000 was due to the other participants at the Kaggle Indoor Location \& Navigation competition. One of these participants can be seen at \cite{BSSID1000}. Though, others have utilised this threshold, we could still have experimented with increasing and decreasing this threshold to see if it would affect the performance of the model.
+
+Applying this threshold for occurrence is only applied to the train data, which means all \gls{bssid}s are present in the test data. Not applying the threshold to the test data was to ensure the presence of \gls{bssid}s. Another experiment could be to apply the threshold to the test data as well to possibly increase the performance of the models.
+
+\subsection{Alternative Data Sources}
+Another possibility for changing the data was to use other types of data from the provided data by Kaggle. We chose to focus on working with WiFi features, but utilising for example Bluetooth data could also be a possible source. The algorithm used to compute the WiFi features could also work for converting the Bluetooth data by extracting the data from Kaggle with \textit{TYPE\_BLUETOOTH} instead of \textit{TYPE\_WIFI}. This could also be simple to test with the models.
+
+It could also be interesting to use the \gls{imu} data for the different machine learning experiments. Currently it is only used for the \gls{pdr} experiment. Utilising this data for the machine learning models could increase performance and is therefore interesting to experiment with as an alternative data source for the machine learning models.
+
+\subsection{One-hot Encoding}
+An alternative approach to increase the performance of the model could be to apply One-hot encoding, which is a standard approach for categorical data. The approach works by converting labels of data into binary features. A reason for applying this is due to some machine learning algorithms not being able to work optimal directly on categorical data.
+
+Decision trees do not have the difficulties of working with label data, therefore this might only be interesting to experiment with for the \gls{ann} and \gls{rnn} models. Though, since we work with labels for floor that are of natural ordering, this might not have a huge impact on the results.
+
+\subsection{Post Processing}
+Alternatively, it could also have been interesting to experiment with utilising the technique Snap to Grid. This technique was also utilised by the winner of the Kaggle's Indoor Navigation \& Location competition. The idea behind the technique is to use the waypoints from the training data to create a grid, and then place our predictions in them. We do this by calculating the closest grid point, which should be closer than a certain threshold and then snap it to the grid. This threshold is deemed to be most optimal between 3-8 by the competitors.
+
+
+
+%\begin{itemize}
+    %\item categorical vs numerical output (snap to grid)
+    %\item one hot encoding
+%\end{itemize}
+
+\section{Machine learning}
+
+For the \gls{gbdt} and \gls{dart} implementation we decided to use \gls{gbdt} rather then \gls{dart} due to the high resources required by \gls{dart}. However, \gls{dart} had more promising results in the long term. If we had allocated more resources to this implementation the \gls{dart} had great potentials, but the resources was required elsewhere. This leads to the conclusion that a way to get a better solution could be to fit the \gls{dart} implementation better the project. If we could eliminate sites with a bad performance and get a even better result, the \gls{dart} implementation seems to a better alternative because of it handling overfitting more effectively. 
+
+To test the \gls{dart} implementations we have used Kaggle notebooks in which we could execute the code. The notebook has a limit of 9 hour before automatically terminating the program. The \gls{dart} implementation however, have a run-time exceeding this threshold. To circumvent this threshold we have created 4 different notebooks where each notebook handles a part of the computation each. When each notebook have handled there responsible models and predictions a fifth notebook manage the results and models. This is a tedious process and makes it difficult to handle more then one test at the same time. Testing \gls{dart} had been more manageable if we had allocated time for this process to run on another service, where the implementation had time to train the model with more resources and/or no time limit.
+
+\section{Hybrids}
+
+%different schemes for combining pdr and lfp instead of just taking an average (weighted average or different machine learning classifier for the combination phase)
+\section{Use Cases of the Solution}
+In this project, we have mainly focused on the indoor positioning technology given that we have the necessary data from an indoor environment. However, to make our solution work as a whole service or system, some additional components are necessary. 
+
+Our solution can be used in different use cases. If it should be used as part of a general positioning system, like Google Maps, to properly utilise our solution, the site, which needs location estimations, needs to be known. This is due to our solution provides indoor positioning specific to each site. This can be accomplished by using the GPS system. A bounding box can be defined for each site, which would require two GPS points. The bounding box is a rectangular area encapsulating GPS points. The GPS points for each site is also available in the dataset. Giving this bounding box, it would then be possible to identify the closest site given the last known GPS point, and then we can provide the location by using our solution.
+
+Another use case would be from the perspective of separate corporations who need an indoor positioning system for their own location based services or applications for their customers. The ones hosting the dataset on Kaggle are this type of stakeholder. In this use case, it might not be necessary to distinguish between different sites as they could only have one. In this case, they can more directly make use of the system without the need for an additional component to determine the site.

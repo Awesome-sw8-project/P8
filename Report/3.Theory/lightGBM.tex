@@ -1,0 +1,66 @@
+\section{Gradient Boosting Decision Trees}
+As also mentioned in the Problem Statement in \textbf{\autoref{sec:problemstatement}},
+we wanted to experiment with Gradient Boosting Decision Trees and similar tree-based algorithms. %LightGBM is a framework for gradient boosting machine used with tree based learning algorithms. It is an open source Microsoft framework built in C++, and with \gls{api}s to integrate it into C\#, R or Python. The scikit-learn \gls{api} is implemented to supply different algorithms to apply to LightGBM. The default algorithm is the traditional \gls{gbdt} and scikit-learn also offers Random Forrest (RF) and others. All the algorithms used by LightGBM is based on machine learning from decision trees.\cite{LightGBM}
+
+In the following section, decision trees will be elaborated, and thereafter what gradient boosting is and how it is applied to the decision tree structure.
+%% HVORFOR ER LIGHTGBM GODT AT BRUGE???
+%https://lightgbm.readthedocs.io/en/latest/Features.html
+
+%GBDT
+%https://lightgbm.readthedocs.io/en/latest/pythonapi/lightgbm.LGBMClassifier.html
+
+\subsection{Decision Tree}
+%HVAD ER DECISION TREES?
+Decision tree is a basic model within supervised machine learning. This model can be represented as a tree, where each internal (non-leaf) node contains a condition that has children corresponding to the evaluation of the condition (most commonly either true or false). The leaf nodes correspond to a classification derived from traversing the decision tree top-down.\cite{AIBook}
+
+%HVORDAN BYGGER VI DECISION TREES?
+To construct a decision tree top-down as mentioned in \cite{AIBook}, the train set is used. The idea is to create the best possible split until reaching a classification, and thereby create a leaf node. It is preferred to create a split that will create pure subsets. To measure the purity of the subsets and determine the best split we use entropy, expected-entropy and information gain.
+
+\begin{equation} \label{eq:entropy}
+    H(X) = \sum_{x \in domain(X)} - P(X = x) * log_{2} (P(X = x))
+\end{equation}
+
+\textbf{\autoref{eq:entropy}} calculates the entropy or purity of a set \textit{X} by summing the calculated probability \textit{P(X = x)} of each classifications occurring in the set. Having an entropy at 0 means a pure subset, where having a subset with evenly distributed elements across the classes would result in an entropy of 1. 
+
+After calculating the entropy of the training set, we want to calculate the entropy after splitting on a particular condition, which is called the expected-entropy. The expected entropy from splitting on condition \textit{Y} is thereby
+
+\begin{equation} \label{eq:entropy1}
+    H(X | Y = y) = \sum_{x \in domain(X)} - P(X = x | Y = y) * log_{2} P(X = x | Y = y)
+\end{equation}
+
+In \textbf{\autoref{eq:entropy1}}, we, similarly to calculating the entropy, calculate the expected-entropy. The overall calculation is the same, the only difference is that we now calculate the entropy given a particular condition \textit{Y}.
+
+To determine the best split for the decision tree, we compare the original entropy of the training set to the expected-entropy for the different conditions. This comparison is called \textit{information gain}.
+
+\begin{equation} \label{eq:information-gain}
+    H(X) - H(X | Y)
+\end{equation}
+
+\textbf{\autoref{eq:information-gain}} calculates the information gain from splitting on condition $Y$ for set $X$. After calculating the information gain for all the different conditions, the best condition to split on is the one with highest information gain.
+
+\subsection{Gradient Boosting}
+Gradient boosting is a technique for gathering different simpler machine learning models into one. Often, it uses decision trees for this purpose. Using the decision trees as the simple model is called \textit{gradient boosting decision trees}. The model is similar to the random forest approach, where we ensemble several decision trees. Though, instead the idea is to repetitively use the decision tree model on a dataset including a potential loss. Thereby, the model will improve through gradient descent.\cite[Chapter~12]{GradientBoosting}
+
+The aim of this process is to create more of a training phase, where it improves on a loss. This is done by assigning an equal weight to each observation in the dataset, and after evaluating the first tree, the weights are regulated. The weights of the observations that were difficult to classify will be increased for next decision tree.\cite[Chapter~12]{GradientBoosting}
+
+
+%\subsection{Dropouts Meet Multiple Additive Regression Trees}
+%As mentioned in \textbf{\autoref{sec:problemsmachinelearning}}, a huge issue for a lot of machine learning models is overfitting, as seen in \textbf{\autoref{sec:problemsmachinelearning}}. To combat the issue of overfitting for Gradient Boosting Decision Trees, \gls{dart} was developed to combat this issue. This algorithm was presented in a paper \cite{dart} by K. V. Rashmi and Ran Gilad-Bachrach, and applies the dropout technique to gradient boosting regression trees. This does not eliminate all overfitting, but reduces it to a certain extent.\cite{dart}
+
+%Dropout is a technique used most commonly for neural networks to reduce overfitting, which is explained in \textbf{\autoref{sec:over_underfit}}. The technique is concerned with randomly dropping units with their connections from the neural network during the training phase. The purpose is to remove units before their start to overspecialise. The dropout technique, as presented in paper \cite{dropout}, has proved to increase performance of neural networks for supervised learning tasks, since it reduces overfitting.
+
+%In each iteration, the different trees are assigned a probability to be dropped. At the bare minimum, at least a single tree is dropped in each iteration. In the paper \cite{dart}, they use the \textit{binomial-plus-one} technique to select which trees to drop and if no trees are selected, then one tree is randomly chosen to be dropped.
+
+
+%\subsection{Level-wise vs. Leaf-wise construction}
+
+
+%%% GBDT algorithm (the one used in the experiment)
+
+
+
+
+
+
+%Parameters to implementation section
+%https://lightgbm.readthedocs.io/en/latest/Parameters.html

@@ -1,0 +1,12 @@
+\section{Problems with Machine Learning Models} \label{sec:problemsmachinelearning}
+In this section, we will explore the disadvantages that can occur when working with machine learning models. Doing so will benefit to understand the problems and avoid mistakes.  
+
+\subsection{Overfitting and Underfitting}\label{sec:over_underfit}
+
+When working with machine learning, one of the biggest challenges is to create a model that is complex enough to solve hard problems, but not complex enough to misunderstand the concept. If the concept is too simple, we have a risk of underfitting. If the concept is too complex and only works for the training data, we have a risk of overfitting. In overfitting, the model is highly accurate on the training data, but would not generalise well, meaning that it would not perform well on unseen data. In underfitting, the model is often too simple, and will therefore struggle to identify the concept, and will therefore neither model the training data nor generalise to new data. It is therefore important to balance the complexity, so the model that is created produces the best generalisation.\cite{Hulten2018}
+
+\subsection{Vanishing and Exploding Gradient Problem} \label{sec:vanishing_exploding_gradient_problem}
+
+In \textbf{\autoref{neuralnetwork}}, the training of a neural network through gradient-based learning is described. When using gradients, there are different issues that can happen. The error gradient, which is used to update the weights in the network, can accumulate and result in a large gradient. Because of the large gradient, large updates to the weights will occur, and the network is in risk of being unstable. When the network is unstable, it may not learn from the training data, or result in Not A Number (NaN) weight values, which can not be updated. These large gradients are also referred to as exploding gradients.\cite{vanishingexploding}
+
+Alternatively, we can also have derivatives that are too small, and the gradient will exponentially grow smaller when we propagate through the model, so we risk having a gradient that will vanish. This is referred to as the vanishing gradient problem.\cite{vanishingexploding}
