@@ -1,11 +1,11 @@
 \pdfbookmark[0]{English title page}{label:titlepage_en}
 \aautitlepage{%
   \englishprojectinfo{
-    \textit{Boats and Hoes}%title
+    \textit{Indoor Position Estimation in Multi-Level Buildings}%title
   }{%
     8th Semester Project (Mobility) %theme
   }{%
-    Fall Semester 2021 %project period
+    Spring Semester 2021 %project period
   }{%
     SW807F21
   }{%
@@ -18,11 +18,11 @@
     Mikkel Filip Jensen\\
   }{%
     %list of supervisors
-    Supervisor
+    Dalin Zhang
   }{%
     1 % number of printed copies
   }{%
-    26th of May, 2021 % date of completion
+    27th of May, 2021 % date of completion
   }%
 }{%department and address
   \textbf{Department of Computer Science}\\
@@ -30,11 +30,11 @@
   \href{http://www.aau.dk}{http://www.aau.dk}
 }{
 %\todo{Husk ikke at bruge passive voice. Derudover er projektet ikke basered rundt om Kaggle. Vi bruger bare deres dataset.}
-This project investigates the difficulties working with indoor navigation as positioning people indoors can be a complex task as there for now is no optimal solution. Therefore, the goal of this project is to predict indoor positions based on real-time sensor data. 
-To meet this goal, several experiments are made to find the most accurate solution. The experiments consist of multiple methods, such as machine learning, Inertial Measurement Unit (IMU) methods, and lastly hybrid methods. To train these models, a dataset provided by Kaggle is used, which consists of multiple indoor positions with matching sensor readings.
+In this project, we investigate the task of indoor positioning in multi-level buildings. This can be a complex task as there currently are no optimal solutions. Therefore, the goal of this project is to predict indoor positions based on real-time sensor data from smartphones. 
+To meet this goal, we conduct several experiments to find the most accurate solution. We also propose three hybrid architectures, which incorporates Pedestrian Dead Reckoning (PDR) and Location Fingerprinting (LFP). Our experiments consist of multiple algorithms within LFP and IMU based methods, and lastly our proposed hybrid methods. To evaluate these methods, we use a dataset provided by the Indoor Navigation \& Location competition at Kaggle, which consists of a variety of sensor data from smartphones and location data.
 \\
-As result, we went with a hybrid approach, combining the IMU method Pedestrian Dead Reckoning (PDR) with the best performing machine learning model Gradient Boosting Decision Tree (GBDT) with a Mean Position Error on 23.21. 
-Different compositions has been experimented with and is concluded that PDR as primary and the GBDT as support is most sufficient, giving the Mean Positioning Error on 18.59.   
+
+We also evaluate the positioning methods by comparing the Mean Position Error (MPE). We also conclude that a hybrid approach, combining the IMU method Pedestrian Dead Reckoning (PDR) as primary with Gradient Boosting Decision Tree (GBDT) as support yields the best performance with a Mean Position Error (MPE) of 18.59. GBDT was chosen since it performed best with a MPE of 23.21. The performance of our best hybrid solution performed 19.91\% better compared to GBDT.
 }
 %\cleardoublepagehttps://www.overleaf.com/project/5f51e9d829099c000199193c
 %\afterpage{\blankpage}

@@ -2,7 +2,7 @@
 As also mentioned in the Problem Statement in \textbf{\autoref{sec:problemstatement}},
 we wanted to experiment with Gradient Boosting Decision Trees and similar tree-based algorithms. %LightGBM is a framework for gradient boosting machine used with tree based learning algorithms. It is an open source Microsoft framework built in C++, and with \gls{api}s to integrate it into C\#, R or Python. The scikit-learn \gls{api} is implemented to supply different algorithms to apply to LightGBM. The default algorithm is the traditional \gls{gbdt} and scikit-learn also offers Random Forrest (RF) and others. All the algorithms used by LightGBM is based on machine learning from decision trees.\cite{LightGBM}
 
-In the following section, decision trees will be elaborated, and thereafter what gradient boosting is and how it is applied to the decision tree structure.
+In the following section, decision trees will be elaborated and thereafter the gradient boosting, and how it is applied to the decision tree structure.
 %% HVORFOR ER LIGHTGBM GODT AT BRUGE???
 %https://lightgbm.readthedocs.io/en/latest/Features.html
 
@@ -11,10 +11,10 @@ In the following section, decision trees will be elaborated, and thereafter what
 
 \subsection{Decision Tree}
 %HVAD ER DECISION TREES?
-Decision tree is a basic model within supervised machine learning. This model can be represented as a tree, where each internal (non-leaf) node contains a condition that has children corresponding to the evaluation of the condition (most commonly either true or false). The leaf nodes correspond to a classification derived from traversing the decision tree top-down.\cite{AIBook}
+Decision tree is a basic model within machine learning. This model can be represented as a tree, where each internal (non-leaf) node contains a condition that has children corresponding to the evaluation of the condition (most commonly either true or false). The leaf nodes correspond to a classification derived from traversing the decision tree top-down.\cite{AIBook}
 
 %HVORDAN BYGGER VI DECISION TREES?
-To construct a decision tree top-down as mentioned in \cite{AIBook}, the train set is used. The idea is to create the best possible split until reaching a classification, and thereby create a leaf node. It is preferred to create a split that will create pure subsets. To measure the purity of the subsets and determine the best split we use entropy, expected-entropy and information gain.
+To construct a decision tree top-down as mentioned in \cite{AIBook}, the train dataset is used. The idea is to create the best possible split until reaching a classification, for which a leaf node is created. It is preferred to create a split that will create pure subsets. To measure the purity of the subsets and determine the best split, we use entropy, expected-entropy and information gain.
 
 \begin{equation} \label{eq:entropy}
     H(X) = \sum_{x \in domain(X)} - P(X = x) * log_{2} (P(X = x))
@@ -39,10 +39,9 @@ To determine the best split for the decision tree, we compare the original entro
 \textbf{\autoref{eq:information-gain}} calculates the information gain from splitting on condition $Y$ for set $X$. After calculating the information gain for all the different conditions, the best condition to split on is the one with highest information gain.
 
 \subsection{Gradient Boosting}
-Gradient boosting is a technique for gathering different simpler machine learning models into one. Often, it uses decision trees for this purpose. Using the decision trees as the simple model is called \textit{gradient boosting decision trees}. The model is similar to the random forest approach, where we ensemble several decision trees. Though, instead the idea is to repetitively use the decision tree model on a dataset including a potential loss. Thereby, the model will improve through gradient descent.\cite[Chapter~12]{GradientBoosting}
+Gradient boosting is a technique for gathering different simpler machine learning models into one. Often, it uses decision trees for this purpose. Using the decision trees as the simple model is called \textit{gradient boosting decision trees}. The model is similar to the random forest approach, where we ensemble several decision trees. Contrary to random forest, the idea with \gls{gbdt} is to repetitively add decision trees, which minimises the loss on the training dataset. Thereby, the model will improve through gradient descent.\cite[Chapter~12]{GradientBoosting}
 
-The aim of this process is to create more of a training phase, where it improves on a loss. This is done by assigning an equal weight to each observation in the dataset, and after evaluating the first tree, the weights are regulated. The weights of the observations that were difficult to classify will be increased for next decision tree.\cite[Chapter~12]{GradientBoosting}
-
+The aim of Gradient Boosting is to create more of a training phase, where it minimises a loss. This is accomplished by assigning an equal weight to each observation in the dataset, and after evaluating the first tree, the weights are regulated. The weights of the observations that were difficult to classify will be increased for next decision tree.\cite[Chapter~12]{GradientBoosting}
 
 %\subsection{Dropouts Meet Multiple Additive Regression Trees}
 %As mentioned in \textbf{\autoref{sec:problemsmachinelearning}}, a huge issue for a lot of machine learning models is overfitting, as seen in \textbf{\autoref{sec:problemsmachinelearning}}. To combat the issue of overfitting for Gradient Boosting Decision Trees, \gls{dart} was developed to combat this issue. This algorithm was presented in a paper \cite{dart} by K. V. Rashmi and Ran Gilad-Bachrach, and applies the dropout technique to gradient boosting regression trees. This does not eliminate all overfitting, but reduces it to a certain extent.\cite{dart}
